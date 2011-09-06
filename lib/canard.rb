@@ -1,5 +1,5 @@
 require "canard/version"
+require "canard/find_abilities"
 
 module Canard
-  # Your code goes here...
 end
