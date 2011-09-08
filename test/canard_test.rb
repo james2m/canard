@@ -1,5 +1,5 @@
 require 'test_helper'
-autoload :Canard, '../lib/canard'
+require_relative '../lib/canard.rb'
 
 describe Canard do
   
@@ -7,7 +7,7 @@ describe Canard do
     class User < ActiveRecord::Base
     end
   
-    Canard.abilities_path = 'abilities'
+    Canard.abilities_path = File.expand_path('../abilities', __FILE__)
   end
   
   # Sanity test
@@ -18,22 +18,11 @@ describe Canard do
   
   describe "abilities_path" do
     
-    describe "default" do
-      
-      it "should be defined" do
-        Canard.abilities_path.must_equal 'abilities'
-      end
-      
+    it "should be mutable" do
+      Canard.abilities_path = 'app/abilities'
+      Canard.abilities_path.must_equal 'app/abilities'
     end
-    
-    describe "setting" do
-      
-      it "should override the default" do
-        Canard.abilities_path = 'app/abilities'
-        Canard.abilities_path.must_equal 'app/abilities'
-      end
-    
-    end
+
   end
   
   describe "ability_definitions" do
@@ -52,12 +41,8 @@ describe Canard do
     
     it "should load the abilities into ability_definitions" do
       Canard.find_abilities
-      
+
       Canard.ability_definitions.keys.must_include :admin
-    end
-    
-    it "should load role_ability definitions" do
-      Canard.ability_definitions.must_be_instance_of Hash
     end
     
   end

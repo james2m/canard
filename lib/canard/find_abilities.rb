@@ -16,11 +16,9 @@ module Canard
     
   end
 
-  self.abilities_path ||= 'abilities'
-
   def self.find_abilities #:nodoc:
+    
     absolute_abilities_path = File.expand_path(abilities_path)
-      puts absolute_abilities_path
 
     if File.directory? absolute_abilities_path
       Dir[File.join(absolute_abilities_path, '**', '*.rb')].sort.each do |file|
