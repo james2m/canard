@@ -9,7 +9,6 @@ class Ability
     
     # If user not set then lets create a guest
     @user = Object.new unless @user
-    
     # As guest doesn't respond_to roles it wont get any abilities
     if @user.respond_to?(:roles)
     
@@ -17,9 +16,7 @@ class Ability
       load_abilities @user.class.name.to_sym
       
       # Add roles on top of the base user abilities
-      @user.roles.each do |role|
-        load_abilities(role)
-      end
+      @user.roles.each { |role| load_abilities(role) }
 
     end
   
