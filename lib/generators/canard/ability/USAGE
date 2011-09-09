@@ -1,0 +1,3 @@
+Description:
+  The canard:ability generator creates an Ability definition in the abilities
+  directory. It also creates the shell of a spec for testing those abilities.
