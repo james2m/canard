@@ -20,10 +20,7 @@ class Ability
       @user.roles.each do |role|
         load_abilities(role)
       end
-      
-      can :update, Account do |a|
-        (@user == u)
-      end
+
     end
   
   end
