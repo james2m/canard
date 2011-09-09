@@ -6,8 +6,8 @@ module Canard
     
     initializer "canard.active_record" do |app|
       ActiveSupport.on_load :active_record do
-        require 'canard/user'
-        extend Canard::User
+        require 'canard/user_model'
+        extend Canard::UserModel
       end
     end
     

@@ -1,4 +1,5 @@
 require 'test_helper'
+require 'canard/user_model'
 
 describe Canard::UserModel do
   
