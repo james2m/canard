@@ -1,0 +1,4 @@
+* create ability generator for a new model e.g. rails g canard:abilitiy user:manage
+* Test the ability class.
+* Test the generators.
+* Test the railtie
