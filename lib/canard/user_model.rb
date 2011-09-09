@@ -1,6 +1,6 @@
 module Canard
 
-  module User
+  module UserModel
     
     def acts_as_user(*args)
       options = args.extract_options!.symbolize_keys

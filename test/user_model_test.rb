@@ -1,11 +1,11 @@
 require 'test_helper'
 
-describe Canard::User do
+describe Canard::UserModel do
   
   before do
     class User < ActiveRecord::Base
       
-      extend Canard::User
+      extend Canard::UserModel
       
       attr_accessor :first_name, :last_name
       
