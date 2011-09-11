@@ -1,0 +1,55 @@
+require_relative '../../spec_helper'
+
+require "cancan/matchers"
+
+describe Ability, "for :<%= name %>" do
+
+  before do
+    @<%= name %> = Factory.create(:<%= name %>_user)
+  end
+  
+  subject { Ability.new(@<%= name -%>) }
+  
+<% if ability_definitions.empty? -%>
+# Define your ability tests thus;
+#
+#  describe 'on Activity' do
+#
+#    before do
+#      @activity = Factory.create(:activity)
+#    end
+#
+#    it { should be_able_to( :index,    Activity  ) }
+#    it { should be_able_to( :show,     @activity ) }
+#    it { should be_able_to( :read,     @activity ) }
+#    it { should be_able_to( :new,      @activity ) }
+#    it { should be_able_to( :create,   @activity ) }
+#    it { should be_able_to( :edit,     @activity ) }
+#    it { should be_able_to( :update,   @activity ) }
+#    it { should be_able_to( :destroy,  @activity ) }
+#
+#  end
+#  # on Activity
+<% else -%>
+<% definitions do |model, definition| -%>
+  
+  describe 'on <%= model.camelize -%>' do
+
+    before do
+      @<%= model -%> = Factory.create(:<%= model -%>)
+    end
+    
+<% definition.cans.each do |can| -%>
+    it { should be_able_to( :<%= can -%>,    <%= can == 'index' ? model.camelize : "@#{model}" -%> ) }
+<% end -%>
+<%- definition.cannots.each do |cannot| -%>
+    it { should_not be_able_to( :<%= cannot -%>,    <%= cannot == 'index' ? model.camelize : "@#{model}" -%> ) }
+<% end -%>
+
+  end
+  # on <%= model.camelize %>
+  <% end -%>
+  
+<% end -%>  
+end
+  
