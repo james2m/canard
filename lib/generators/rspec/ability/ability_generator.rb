@@ -1,5 +1,5 @@
 require 'generators/rspec'
-require_relative 'ability_definition'
+require_relative '../../ability_definition'
 
 module Rspec
   module Generators

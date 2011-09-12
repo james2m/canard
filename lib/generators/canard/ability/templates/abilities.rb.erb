@@ -1,5 +1,6 @@
-abilities_for(<%= ":#{name}" %>) do
+abilities_for(<%= ":#{name}" -%>) do
 
+<% if ability_definitions.empty? -%>
   # Define abilities for the user role here. For example:
   #
   #   if user.admin?
@@ -21,5 +22,11 @@ abilities_for(<%= ":#{name}" %>) do
   #   can :update, Article, :published => true
   #
   # See the wiki for details: https://github.com/ryanb/cancan/wiki/Defining-Abilities
+<% else -%>
+<% definitions do |model, definition| -%>
+  <%= "can".ljust(8, ' ') + "#{definition.cans.map(&:to_sym)}, #{model.classify}" unless definition.cans.empty? %>
+  <%= "cannot".ljust(8, ' ') + "#{definition.cannots.map(&:to_sym)}, #{model.classify}" unless definition.cans.empty? %>
+<% end -%>
+<% end -%>
 
 end
