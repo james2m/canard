@@ -24,6 +24,10 @@ class Ability
   
   private
   
+  def user
+    @user
+  end
+  
   def ability_definitions
     Canard.ability_definitions
   end
