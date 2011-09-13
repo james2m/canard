@@ -9,7 +9,7 @@ module Canard
       include RoleModel
 
       class_eval do
-        has_one   :account, :dependent => :destroy
+        has_one   :account, :dependent => :destroy, :as => 'user'
         delegate  :email,   :to => :account, :allow_nil => true
       end
 
