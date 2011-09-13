@@ -7,17 +7,19 @@ class Ability
     # If a user was passed set the user from it.
     @user = object.is_a?(Account) ? object.user : object
     
-    # If user not set then lets create a guest
-    @user = Object.new unless @user
-    # As guest doesn't respond_to roles it wont get any abilities
-    if @user.respond_to?(:roles)
-    
+    if @user
       # Add the base user abilities.
-      load_abilities @user.class.name.to_sym
-      
+      load_abilities @user.class.name.underscore.to_sym
+    else
+      # If user not set then lets create a guest
+      @user = Object.new
+      load_abilities :guest
+    end
+    
+    # If user has roles get those abilities
+    if @user.respond_to?(:roles)
       # Add roles on top of the base user abilities
       @user.roles.each { |role| load_abilities(role) }
-
     end
   
   end
