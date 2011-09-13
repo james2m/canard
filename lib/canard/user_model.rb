@@ -9,8 +9,8 @@ module Canard
       include RoleModel
 
       class_eval do
-        has_one   :account,              :dependent => :destroy, :as => :user
-        delegate  :email,                :to => :account, :allow_nil => true
+        has_one   :account, :dependent => :destroy
+        delegate  :email,   :to => :account, :allow_nil => true
       end
 
       roles options[:roles] if options.has_key?(:roles) && self.column_names.include?(self.roles_attribute_name.to_s)
