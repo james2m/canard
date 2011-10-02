@@ -1,0 +1,128 @@
+= Canard
+
+Canard brings CanCan and RoleModel together to make role based authorization in Rails easy. Your ability 
+definitions gain their own folder and a little structure. The easiest way to get started is with the 
+Canard generator. Canard progressively enhances the abilities of the model by applying role abilities on
+top of the models base abilities.
+
+A User model with :admin and :manger roles would be defined:
+
+    class User < ActiveRecord::Base
+    
+      acts_as_user :roles => :admin, :manager
+      
+    end
+    
+Lets generate some abilities for the User.
+
+    $ rails g canard:ability user can:[read,create]:[account,statement] cannot:destroy:account
+    create  abilities/users.rb
+    invoke  rspec
+    create    spec/abilities/user_spec.rb
+
+Generates an ability folder in Rails root and an associated spec;
+
+    abilities/
+      users.rb
+    spec/abilities/
+      users_spec.rb
+
+The resulting abilities/users.rb will look something like this;
+
+    abilities_for(:user) do
+    
+      can     [:read, :create], Account
+      cannot  [:destroy], Account
+      can     [:read, :create], Statement
+    
+    end
+    
+And it's associated test spec/abilities/users_spec.rb;
+
+    require_relative '../spec_helper'
+    require "cancan/matchers"
+
+    describe Ability, "for :user" do
+
+      before do
+        @user = Factory.create(:user_user)
+      end
+
+      subject { Ability.new(@user) }
+
+      describe 'on Account' do
+
+        before do
+          @account = Factory.create(:account)
+        end
+
+        it { should be_able_to( :read,      @account ) }
+        it { should be_able_to( :create,    @account ) }
+        it { should_not be_able_to( :destroy,   @account ) }
+
+      end
+      # on Account
+
+      describe 'on Statement' do
+
+        before do
+          @statement = Factory.create(:statement)
+        end
+
+        it { should be_able_to( :read,      @statement ) }
+        it { should be_able_to( :create,    @statement ) }
+
+      end
+      # on Statement
+
+    end
+
+Now lets generate some abilities for the manager and admin.
+
+    $ rails g canard:ability admin can:manage:[account,statement]
+    $ rails g canard:ability manager can:edit:statement
+
+Will give us two new sets of abilities in the abilities folder. Canard will apply these abilities by first
+loading the ability for the User model and then apply the abilities for each role the current user has.
+
+Canard also creates a guest ability by default so:
+
+    $ rails g canard:ability guest can:create:user
+    
+Would generate an ability for a not logged in user to signup.
+
+Obviously the generators are just a starting point and should not be used only to get you going. I strongly 
+suggest that every new model you create you add to the abilities as the specs are so easy to write and CanCan
+definitions are so clear and simple.
+
+== Installation
+
+=== Rails 3.x
+
+Add the canard gem to your Gemfile. In Gemfile:
+
+    gem "canard"
+
+That's it!
+
+=== Rails 2.x
+
+Sorry you are out of luck with Rails 2.x Canard has only been written and tested with Rails 3.x. I'll be happy 
+to accept pull requests for tested Rails 2.x updates if anybody is game.
+
+== Note on Patches/Pull Request
+
+* Fork the project.
+* Make your feature addition or bug fix.
+* Add tests for it (when I have some). This is important so I don't break it in a future version unintentionally.
+* Commit, do not mess with rakefile, version, or history. (if you want to have your own version, that is fine but
+  bump version in a commit by itself I can ignore it when I pull)
+* Send me a pull request.  Bonus points for topic branches.
+
+== Credits
+
+Thanks to Ryan Bates for creating the awesome CanCan (http://wiki.github.com/ryanb/cancan/role-based-authorization) 
+and Martin Rehfeld for implementing Role Based Authorization in the form of RoleModel (http://github.com/martinrehfeld/role_model).
+
+== Copyright
+Copyright (c) 2011 James McCarthy, released under the MIT license
