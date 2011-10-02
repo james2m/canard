@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.email       = ["james2mccarthy@gmail.com"]
   s.homepage    = ""
   s.summary     = %q{Adds RoleModel roles to CanCan.}
-  s.description = %q{Wraps CanCan and RoleModel up with some scopes}
+  s.description = %q{Wraps CanCan and RoleModel up with a generator and makes role based authorisation really easy in Rails 3.x.}
 
   s.rubyforge_project = "canard"
 
