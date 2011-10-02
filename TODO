@@ -2,3 +2,4 @@
 * Test the ability class.
 * Test the generators.
 * Test the railtie
+* Add scopes by default and :scopes => false to acts_as_user
