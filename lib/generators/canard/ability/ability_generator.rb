@@ -4,7 +4,7 @@ module Canard
   module Generators
     class AbilityGenerator < Rails::Generators::NamedBase
       source_root File.expand_path('../templates', __FILE__)
-      argument :ability_definitions, :type => :array, :default => [], :banner => "can:abilities:models cannot:abilities:models"
+      argument :ability_definitions, :type => :array, :default => [], :banner => "can:[read,update]:[user,account] cannot:[create,destroy]:user"
 
       def generate_ability
         template "abilities.rb.erb", Canard.abilities_path + "/#{file_name.pluralize}.rb"
