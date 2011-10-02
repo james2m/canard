@@ -25,7 +25,7 @@ abilities_for(<%= ":#{name}" -%>) do
 <% else -%>
 <% definitions do |model, definition| -%>
   <%= "can".ljust(8, ' ') + "#{definition.cans.map(&:to_sym)}, #{model.classify}" unless definition.cans.empty? %>
-  <%= "cannot".ljust(8, ' ') + "#{definition.cannots.map(&:to_sym)}, #{model.classify}" unless definition.cans.empty? %>
+  <%= "cannot".ljust(8, ' ') + "#{definition.cannots.map(&:to_sym)}, #{model.classify}" unless definition.cannots.empty? %>
 <% end -%>
 <% end -%>
 
