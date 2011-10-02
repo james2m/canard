@@ -1,58 +1,58 @@
 require 'test_helper'
-require 'canard/user_model'
+require 'canard'
 
 describe Canard::UserModel do
   
   before do
-    class User < ActiveRecord::Base
-      
-      extend Canard::UserModel
-      
-      attr_accessor :first_name, :last_name
-      
-      acts_as_user :roles => [:admin]
-      
-      def initialize(params={})
-        self.first_name = params[:first_name]
-        self.last_name  = params[:last_name]
-      end
-      
-    end
-  
     Canard.abilities_path = 'abilities'
+    require 'models/user'
+    require 'models/user_without_role'
+    require 'models/user_without_role_mask'
   end
   
   # Sanity test
   it "must be an user" do
     user = User.new
     user.must_be_instance_of User
+    user = UserWithoutRole.new
+    user.must_be_instance_of UserWithoutRole
+    user = UserWithoutRoleMask.new
+    user.must_be_instance_of UserWithoutRoleMask
   end
   
-  describe 'name' do
-    it 'should return blank string if no name details entered' do
-      user = User.new
+  describe 'acts_as_user' do
+    
+    it 'should add role_model to this model' do
+      User.included_modules.must_include RoleModel
+      User.must_respond_to :roles
+    end
+    
+    describe 'on a model with a role mask' do
       
-      user.name.must_equal ''
+      describe 'and :roles => [] specified' do
+      
+        it 'should set the valid_roles for the class' do
+          User.valid_roles.must_equal [:admin, :author, :viewer]
+        end
+        
+      end
+      
+      describe 'with no :roles => [] specified' do
+        
+        it 'should not set any roles' do
+          UserWithoutRole.valid_roles.must_equal []
+        end
+      end
       
     end
-
-    it 'should return first_name if first_name only' do
-      user = User.new(:first_name => 'Harvey', :last_name => nil)
       
-      user.name.must_equal 'Harvey'
-    end
-
-    it 'should return last_name if last_name only' do
-      user = User.new(:first_name => '', :last_name => 'Keitel')
+    describe 'with no roles_mask' do
       
-      user.name.must_equal 'Keitel'
+      it 'should not set any roles' do
+        UserWithoutRole.valid_roles.must_equal []
+      end
     end
-
-    it 'should return first_name last_name if both details present' do
-      user = User.new(:first_name => 'Calvin', :last_name => 'Broadus')
-      
-      user.name.must_equal 'Calvin Broadus'
-    end
+    
   end
 
 end
