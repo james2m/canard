@@ -6,9 +6,8 @@ module Canard
     
     initializer "canard.active_record" do |app|
       ActiveSupport.on_load :active_record do
-        require 'canard/user_model'
         extend Canard::UserModel
-        Canard.abilities_path ||= File.expand_path('app/abilities', Rails.root)
+        Canard.abilities_path ||= File.expand_path('abilities', Rails.root)
         Canard.find_abilities
       end
     end

@@ -7,7 +7,7 @@ module Canard
       argument :ability_definitions, :type => :array, :default => [], :banner => "can:abilities:models cannot:abilities:models"
 
       def generate_ability
-        template "abilities.rb.erb", "app/abilities/#{file_name.pluralize}.rb"
+        template "abilities.rb.erb", Canard.abilities_path + "/#{file_name.pluralize}.rb"
       end
     
       hook_for :test_framework, :as => 'ability'

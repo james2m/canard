@@ -3,7 +3,7 @@ module Canard
   class << self
     # A string specifying the location that should be searched for ability
     # definitions. By default, Canard will attempt to load abilities from
-    # Rails.root + /app/abilities/.
+    # Rails.root + /abilities/.
     attr_accessor :abilities_path
     
     def ability_definitions
