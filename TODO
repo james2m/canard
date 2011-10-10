@@ -3,3 +3,4 @@
 * Test the generators.
 * Test the railtie
 * Add scopes by default and :scopes => false to acts_as_user
+* Expand the tests to produce all the standard abilities: index,show,read,new,create,edit,update,destroy.
