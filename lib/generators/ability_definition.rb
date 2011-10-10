@@ -6,12 +6,12 @@ class AbilityDefinition
   
   def self.parse(definitions)
     @@ability_definitions ||= {}
-    limitation, ability_names, model_names = *definitions.split(':')
-    abilities, models = extract(ability_names), extract(model_names)
-    models.each do |model|
-      definition = @@ability_definitions[model] || AbilityDefinition.new
-      definition.merge(limitation.pluralize, abilities)
-      @@ability_definitions[model] = definition
+    limitation, ability_list, model_list = *definitions.split(':')
+    ability_names, model_names = extract(ability_list), extract(model_list)
+    model_names.each do |model_name|
+      definition = @@ability_definitions[model_name] || AbilityDefinition.new
+      definition.merge(limitation.pluralize, ability_names)
+      @@ability_definitions[model_name] = definition
     end
   end
   
@@ -27,9 +27,9 @@ class AbilityDefinition
     @cans, @cannots = [], []
   end
   
-  def merge(limitation, abilities)
-    combined_abilities = instance_variable_get("@#{limitation}") | abilities
-    instance_variable_set("@#{limitation}", combined_abilities)
+  def merge(limitation, ability_names)
+    combined_ability_names = instance_variable_get("@#{limitation}") | ability_names
+    instance_variable_set("@#{limitation}", combined_ability_names)
   end
   
   def can
