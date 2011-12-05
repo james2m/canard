@@ -95,6 +95,21 @@ Obviously the generators are just a starting point and should not be used only t
 suggest that every new model you create you add to the abilities as the specs are so easy to write and CanCan
 definitions are so clear and simple.
 
+== Scopes
+
+The :acts_as_user method with automatically define some named scopes for each role. For the example User model
+above it will define the following scopes;
+
+User.admins::       return all the users with the admin role
+User.non_admins::   return all the users without the admin role
+User.managers::     return all the users with the manager role
+User.non_namagers:: return all the users without the manager role
+
+In addition to the role specific scopes it also adds some general scopes;
+
+User.with_any_role(roles)::   return all the users with any of the specified roles
+User.with_all_roles(roles)::  return only the users with all the specified roles
+
 == Installation
 
 === Rails 3.x
