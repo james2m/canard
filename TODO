@@ -3,3 +3,5 @@
 * Test the generators.
 * Test the railtie
 * Expand the tests to produce all the standard abilities: index,show,read,new,create,edit,update,destroy.
+* Take the Factory references out of the generated tests.
+* Add some rdocs.
