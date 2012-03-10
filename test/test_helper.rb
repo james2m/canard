@@ -51,6 +51,10 @@ module MiniTestWithActiveRecord
     def after_suites
       @migration.new.migrate(:down)
       super
+      
+      Object.send(:remove_const, 'Canard') if Object.const_defined?("Canard")
+      GC.start
+      load File.expand_path('../../lib/canard.rb', __FILE__)
     end
   end
 end
