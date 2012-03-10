@@ -1,5 +1,6 @@
 require 'cancan'
 require 'role_model'
+require 'canard/abilities'
 require 'canard/version'
 require 'canard/user_model'
 require "canard/find_abilities"
