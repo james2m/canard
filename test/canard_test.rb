@@ -1,21 +1,8 @@
 require 'test_helper'
-require_relative '../lib/canard.rb'
+require 'canard'
 
 describe Canard do
-  
-  before do
-    class User < ActiveRecord::Base
-    end
-  
-    Canard.abilities_path = File.expand_path('../abilities', __FILE__)
-  end
-  
-  # Sanity test
-  it "must be an user" do
-    user = User.new
-    user.must_be_instance_of User
-  end
-  
+    
   describe "abilities_path" do
     
     it "should be mutable" do
@@ -36,15 +23,5 @@ describe Canard do
     end
     
   end  
-  
-  describe "find_abilities" do
     
-    it "should load the abilities into ability_definitions" do
-      Canard.find_abilities
-
-      Canard.ability_definitions.keys.must_include :admin
-    end
-    
-  end
-  
 end
