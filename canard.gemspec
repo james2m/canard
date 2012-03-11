@@ -21,6 +21,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency "minitest", "~> 2"
   s.add_development_dependency "sqlite3"
   s.add_development_dependency "activerecord"
+  s.add_runtime_dependency 'activesupport'
   s.add_runtime_dependency "cancan"
   s.add_runtime_dependency "role_model"
 end
