@@ -7,13 +7,14 @@ module Canard
     attr_accessor :abilities_path
     
     def ability_definitions
-      @ability_definitions ||= {}
+      Abilities.definitions
     end
     
     def abilities_for(role, &block)
+      ::ActiveSupport::Deprecation.warn("abilities_for is deprecated and will be removed from Canard 0.4.0. Use Canard::Abilities.for and move the definitions to app/abilities.")
       ability_definitions[role] = block
     end
-    
+
   end
 
   def self.find_abilities #:nodoc:
@@ -25,7 +26,8 @@ module Canard
         self.class_eval File.read(file)
       end
     end
-
+    
   end
+  
   
 end
