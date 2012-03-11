@@ -31,7 +31,7 @@ class Ability
   end
   
   def ability_definitions
-    Canard.ability_definitions
+    Canard::Abilities.definitions
   end
   
   def load_abilities(role)
