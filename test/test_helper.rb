@@ -2,6 +2,18 @@ require 'rubygems'
 gem     'minitest'
 require 'active_record'
 require 'minitest/autorun'
+require 'pathname'
+
+module Rails
+  
+  module VERSION
+    MAJOR = 0
+  end
+  
+  def self.root
+    Pathname.new(File.expand_path('..', __FILE__))
+  end
+end
 
 module MiniTestWithHooks
   class Unit < MiniTest::Unit
@@ -51,12 +63,25 @@ module MiniTestWithActiveRecord
     def after_suites
       @migration.new.migrate(:down)
       super
-      
-      Object.send(:remove_const, 'Canard') if Object.const_defined?("Canard")
-      GC.start
-      load File.expand_path('../../lib/canard.rb', __FILE__)
     end
   end
 end
 
+MiniTestWithActiveRecord::Unit::TestCase.add_teardown_hook do
+  Object.send(:remove_const, 'Canard') if Object.const_defined?('Canard')
+  GC.start
+end
+
+MiniTestWithActiveRecord::Unit::TestCase.add_setup_hook do
+  [ 'canard/abilities.rb',
+    'canard/user_model.rb',
+    "canard/find_abilities.rb"
+  ].each do |file|
+    file_path = File.join(File.expand_path('../../lib', __FILE__), file)
+    load file_path
+  end
+  
+end
+
 MiniTest::Unit.runner = MiniTestWithActiveRecord::Unit.new
+
