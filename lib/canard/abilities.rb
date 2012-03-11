@@ -10,7 +10,7 @@ module Canard
       
       attr_reader :definitions
       
-      def define(name, &block)
+      def for(name, &block)
         raise ArgumentError.new('No block of ability definitions given') unless block_given?
         @definitions[name.to_sym] = block
       end

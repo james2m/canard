@@ -29,19 +29,19 @@ describe 'Canard::Abilities' do
     it "adds the block to the definitions" do
       block = lambda { puts 'some block' }
       
-      subject.define(:definition, &block)
+      subject.for(:definition, &block)
 
       assert_equal block, subject.definitions[:definition]
     end
     
     it "normalises the key to a symbol" do
-      subject.define('definition') { puts 'a block' }
+      subject.for('definition') { puts 'a block' }
       
       subject.definitions.keys.must_include :definition
     end
     
     it "rasises ArgumentError if no block is provided" do
-      proc { subject.define(:definition) }.must_raise ArgumentError
+      proc { subject.for(:definition) }.must_raise ArgumentError
     end
     
   end
