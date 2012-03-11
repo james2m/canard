@@ -27,6 +27,12 @@ module Canard
       end
     end
     
+    Abilities.definition_paths.each do |path|
+      Dir[File.join(Rails.root, path, '**', '*.rb')].sort.each do |file|
+        load file
+      end
+    end
+
   end
   
   
