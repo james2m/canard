@@ -16,18 +16,18 @@ A User model with :admin and :manger roles would be defined:
 Lets generate some abilities for the User.
 
     $ rails g canard:ability user can:[read,create]:[account,statement] cannot:destroy:account
-    create  abilities/users.rb
+    create  app/abilities/users.rb
     invoke  rspec
     create    spec/abilities/user_spec.rb
 
 Generates an ability folder in Rails root and an associated spec;
 
-    abilities/
+    app.abilities/
       users.rb
     spec/abilities/
       users_spec.rb
 
-The resulting abilities/users.rb will look something like this;
+The resulting app/abilities/users.rb will look something like this;
 
     abilities_for(:user) do
     
