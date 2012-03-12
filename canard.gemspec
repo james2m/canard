@@ -8,8 +8,8 @@ Gem::Specification.new do |s|
   s.authors     = ["James McCarthy"]
   s.email       = ["james2mccarthy@gmail.com"]
   s.homepage    = "https://github.com/james2m/canard"
-  s.summary     = %q{Adds RoleModel roles to CanCan.}
-  s.description = %q{Wraps CanCan and RoleModel up with a generator and makes role based authorisation really easy in Rails 3.x.}
+  s.summary     = %q{Adds role based authorisation to Rails by combining RoleModel and CanCan.}
+  s.description = %q{Wraps CanCan and RoleModel up to make role based authorisation really easy in Rails 3.x.}
 
   s.rubyforge_project = "canard"
 
