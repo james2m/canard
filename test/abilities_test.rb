@@ -24,6 +24,21 @@ describe 'Canard::Abilities' do
 
   end
   
+  describe "default_path" do
+    
+    it "defaults to app/abilities" do
+      subject.default_path.must_equal 'app/abilities'
+    end
+
+    it "can be changhed" do
+      subject.default_path = 'other_abilities'
+      
+      subject.default_path.must_equal 'other_abilities'
+    end
+
+    
+  end
+  
   describe "define" do
     
     it "adds the block to the definitions" do
