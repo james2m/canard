@@ -103,7 +103,7 @@ above it will define the following scopes;
 User.admins::       return all the users with the admin role
 User.non_admins::   return all the users without the admin role
 User.managers::     return all the users with the manager role
-User.non_namagers:: return all the users without the manager role
+User.non_managers:: return all the users without the manager role
 
 In addition to the role specific scopes it also adds some general scopes;
 
