@@ -1,5 +1,5 @@
 = Canard
-
+== Overview
 Canard brings CanCan and RoleModel together to make role based authorization in Rails easy. Your ability 
 definitions gain their own folder and a little structure. The easiest way to get started is with the 
 Canard generator. Canard progressively enhances the abilities of the model by applying role abilities on
@@ -9,11 +9,21 @@ A User model with :admin and :manger roles would be defined:
 
     class User < ActiveRecord::Base
     
-      acts_as_user :roles => :admin, :manager
+      acts_as_user :roles =>  :manager, :admin
       
     end
     
-Lets generate some abilities for the User.
+If a User has both the :manager and :admin roles Canard will apply the abilities in the following order.
+First it will look for a users abilities, then it will look for the roles in the order they are defined e.g.
+
+    app/abilities/users.rb
+    app/abilities/manager.rb
+    app/abilities/admin.rb
+    
+Therefore each the later abilities only need to build on their predecessors. 
+
+== Usage 
+To generate some abilities for the User.
 
     $ rails g canard:ability user can:[read,create]:[account,statement] cannot:destroy:account
     create  app/abilities/users.rb
@@ -29,7 +39,7 @@ Generates an ability folder in Rails root and an associated spec;
 
 The resulting app/abilities/users.rb will look something like this;
 
-    abilities_for(:user) do
+    Canard::Abilities.for(:user) do
     
       can     [:read, :create], Account
       cannot  [:destroy], Account
@@ -82,18 +92,19 @@ Now lets generate some abilities for the manager and admin.
     $ rails g canard:ability admin can:manage:[account,statement]
     $ rails g canard:ability manager can:edit:statement
 
-Will give us two new sets of abilities in the abilities folder. Canard will apply these abilities by first
+Gives us two new sets of abilities in the abilities folder. Canard will apply these abilities by first
 loading the ability for the User model and then apply the abilities for each role the current user has.
 
-Canard also creates a guest ability by default so:
+
+If there is no user (i.e. logged out) Canard creates a guest and looks for a guest ability to apply so:
 
     $ rails g canard:ability guest can:create:user
     
 Would generate an ability for a not logged in user to signup.
 
-Obviously the generators are just a starting point and should not be used only to get you going. I strongly 
-suggest that every new model you create you add to the abilities as the specs are so easy to write and CanCan
-definitions are so clear and simple.
+Obviously the generators are just a starting point and should  be used only to get you going. I strongly 
+suggest that every new model you create you add to the abilities as the specs are easy to write and CanCan
+definitions are very clear and simple.
 
 == Scopes
 
@@ -133,6 +144,11 @@ to accept pull requests for tested Rails 2.x updates if anybody is game.
 * Commit, do not mess with rakefile, version, or history. (if you want to have your own version, that is fine but
   bump version in a commit by itself I can ignore it when I pull)
 * Send me a pull request.  Bonus points for topic branches.
+
+== Contributors
+
+* James McCarthy
+* Joey Geiger
 
 == Credits
 
