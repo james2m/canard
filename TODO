@@ -1,7 +1,7 @@
-* create ability generator for a new model e.g. rails g canard:abilitiy user:manage
 * Test the ability class.
 * Test the generators.
 * Test the railtie
 * Expand the tests to produce all the standard abilities: index,show,read,new,create,edit,update,destroy.
-* Take the Factory references out of the generated tests.
+* Add test unit generator.
+* Add install generator to allow overriding of the default tests.
 * Add some rdocs.
