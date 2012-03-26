@@ -9,17 +9,17 @@ class Ability
     
     if @user
       # Add the base user abilities.
-      load_abilities @user.class.name.underscore.to_sym
+      append_abilities @user.class.name.underscore.to_sym
     else
       # If user not set then lets create a guest
       @user = Object.new
-      load_abilities :guest
+      append_abilities :guest
     end
     
     # If user has roles get those abilities
     if @user.respond_to?(:roles)
       # Add roles on top of the base user abilities
-      @user.roles.each { |role| load_abilities(role) }
+      @user.roles.each { |role| append_abilities(role) }
     end
   
   end
@@ -34,7 +34,7 @@ class Ability
     Canard::Abilities.definitions
   end
   
-  def load_abilities(role)
+  def append_abilities(role)
     instance_eval(&ability_definitions[role]) if ability_definitions.has_key?(role)
   end
 
