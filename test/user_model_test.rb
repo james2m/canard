@@ -5,9 +5,6 @@ describe Canard::UserModel do
   
   before do
     Canard.abilities_path = 'abilities'
-    require 'models/user'
-    require 'models/user_without_role'
-    require 'models/user_without_role_mask'
   end
   
   # Sanity test

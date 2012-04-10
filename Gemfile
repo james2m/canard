@@ -6,3 +6,4 @@ gemspec
 group :test do
   gem 'rake'
 end
+gem 'ruby-debug19', :group => [:development, :test]
