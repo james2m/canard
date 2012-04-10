@@ -13,7 +13,11 @@ module Canard
     end
     
     initializer "canard.abilities_reloading", :after => "action_dispatch.configure" do |app|
-      ActionDispatch::Reloader.to_prepare { Canard.find_abilities }
+      if ActionDispatch::Reloader.respond_to?(:to_prepare)
+        ActionDispatch::Reloader.to_prepare { Canard.find_abilities }
+      else
+        ActionDispatch::Reloader.before { Canard.find_abilities }
+      end
     end
     
   end
