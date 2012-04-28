@@ -39,7 +39,7 @@ describe 'Canard::Abilities' do
     
   end
   
-  describe "define" do
+  describe "for" do
     
     it "adds the block to the definitions" do
       block = lambda { puts 'some block' }
