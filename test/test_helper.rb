@@ -1,3 +1,4 @@
+gem 'minitest'
 require 'minitest/autorun'
 
 # Configure Rails Environment
