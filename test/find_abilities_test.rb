@@ -23,7 +23,7 @@ describe Canard do
     it "finds the abilities with the new syntax" do
       Canard.find_abilities
       
-      Canard.ability_definitions.keys.must_include :moderator
+      Canard.ability_definitions.keys.must_include :author
     end
     
     it "reloads existing abilities" do
@@ -31,7 +31,7 @@ describe Canard do
       Canard::Abilities.send(:instance_variable_set, '@definitions', {})
       Canard.find_abilities
       
-      Canard.ability_definitions.keys.must_include :moderator
+      Canard.ability_definitions.keys.must_include :author
       Canard.ability_definitions.keys.must_include :admin
     end
     
