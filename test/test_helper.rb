@@ -12,5 +12,6 @@ Rails.backtrace_cleaner.remove_silencers!
 Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each { |f| require f }
 
 ActiveRecord::Migration.verbose = false
-load(File.dirname(__FILE__) + '/schema.rb')
+load(File.expand_path('../dummy/db/schema.rb', __FILE__))
+
 
