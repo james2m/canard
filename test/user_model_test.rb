@@ -29,7 +29,7 @@ describe Canard::UserModel do
       describe 'and :roles => [] specified' do
       
         it 'should set the valid_roles for the class' do
-          User.valid_roles.must_equal [:admin, :author, :viewer]
+          User.valid_roles.must_equal [:viewer, :author, :admin]
         end
         
       end
