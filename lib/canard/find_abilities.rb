@@ -4,7 +4,11 @@ module Canard
     # A string specifying the location that should be searched for ability
     # definitions. By default, Canard will attempt to load abilities from
     # Rails.root + /abilities/.
-    attr_accessor :abilities_path
+    attr_writer :abilities_path
+    
+    def abilities_path 
+      @abilities_path ||= File.expand_path('abilities', Rails.root)
+    end
     
     def ability_definitions
       Abilities.definitions
@@ -18,7 +22,6 @@ module Canard
   end
 
   def self.find_abilities #:nodoc:
-    
     absolute_abilities_path = File.expand_path(abilities_path)
 
     if File.directory? absolute_abilities_path
