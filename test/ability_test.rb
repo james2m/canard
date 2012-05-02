@@ -23,7 +23,7 @@ describe Ability do
     describe "with a model that references a user" do
       
       let(:user) { User.create }
-      let(:member) { Member.new(user: user) }
+      let(:member) { Member.new(:user => user) }
       
       subject { Ability.new(member) }
       
@@ -36,8 +36,8 @@ describe Ability do
     describe "for a user with author role" do
       
       let(:user) { User.create(:roles => [:author]) }
-      let(:member) { Member.create(user: user) }
-      let(:other_member) { Member.new(user: User.create) }
+      let(:member) { Member.create(:user => user) }
+      let(:other_member) { Member.new(:user => User.create) }
       subject { Ability.new(user) }
       
       it "has all the abilities of the base class" do
@@ -66,9 +66,9 @@ describe Ability do
     describe "for a user with admin and author role" do
       
       let(:user) { User.create(:roles => [:author, :admin]) }
-      let(:member) { Member.create(user: user) }
+      let(:member) { Member.create(:user => user) }
       let(:other_user) { User.create }
-      let(:other_member) { Member.new(user: other_user) }
+      let(:other_member) { Member.new(:user => other_user) }
       subject { Ability.new(user) }
       
       it "has all the abilities of the base class" do
