@@ -1,7 +1,6 @@
-* Test the ability class.
 * Test the generators.
 * Test the railtie
 * Expand the tests to produce all the standard abilities: index,show,read,new,create,edit,update,destroy.
 * Add test unit generator.
 * Add install generator to allow overriding of the default tests.
-* Add some rdocs.
+* Make the Ability user referece configureable.
