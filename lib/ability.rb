@@ -1,11 +1,39 @@
+# Canard provides a CanCan Ability class for you. The Canard Ability class
+# looks for and applies abilities for the object passed when a new Ability
+# instance is initialized.
+#
+# If the passed object has a reference to user the user is set to that.
+# Otherwise the passed object is assumed to be the user. This gives the
+# flexibility to have a seperate model for authorization from the model used
+# to authenticate the user.
+#
+# Abilities are applied in the order they are set with the acts_as_user method
+# for example for the User model
+#
+#     class User < ActiveRecord::Base
+#
+#       acts_as_user :roles =>  :manager, :admin
+#
+#     end
+#
+# the abilities would be applied in the order: users, managers, admins
+# with each subsequent set of abilities building on or overriding the existing
+# abilities.
+#
+# If there is no object passed to the Ability.new method a guest ability is
+# created and Canard will look for a guests.rb amongst the ability definitions
+# and give the guest those abilities.
 class Ability
 
   include CanCan::Ability
 
+  attr_reader :user
+
   def initialize(object=nil)
     
-    # If a user was passed set the user from it.
-    @user = object.is_a?(Account) ? object.user : object
+    # If object has a user attribute set the user from it otherwise assume
+    # this is the user.
+    @user = object.respond_to?(:user) ? object.user : object
     
     if @user
       # Add the base user abilities.
@@ -26,12 +54,8 @@ class Ability
   
   private
   
-  def user
-    @user
-  end
-  
   def ability_definitions
-    Canard::Abilities.definitions
+    Canard.ability_definitions
   end
   
   def append_abilities(role)

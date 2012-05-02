@@ -1,5 +1,5 @@
 Canard::Abilities.for(:author) do
     
-  can :manage, Post
+  can [:create, :update, :read], Post
     
 end

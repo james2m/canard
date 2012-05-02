@@ -1,5 +1,5 @@
 abilities_for(:admin) do
-    
-  can :manage, [Activity, User, Variation, Year]
-    
+
+  can :manage, [Activity, User]
+
 end
