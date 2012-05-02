@@ -2,6 +2,43 @@ module Canard
 
   module UserModel
     
+    # Canard applies roles to a model using the acts_as_user class method. The following User model
+    # will be given the :manager and :admin roles
+    #
+    #   class User < ActiveRecord::Base
+    #
+    #     acts_as_user :roles =>  :manager, :admin
+    #
+    #   end
+    #
+    # == Scopes
+    #
+    # Beyond applying the roles to model acts_as_user also creates some useful scopes on the User
+    # model;
+    #
+    #   User.with_any_role(:manager, :admin)
+    #
+    # returns all the managers and admins
+    #
+    #  User.with_all_roles(:manager, :admin)
+    #
+    # returns only the users with both the manager and admin roles
+    #
+    #   User.admins
+    #
+    # returns all the admins as
+    #
+    #  User.managers
+    #
+    # returns all the users with the maager role likewise
+    #
+    #   User.non_admins
+    #
+    # returns all the users who don't have the admin role and
+    #
+    #   User.non_managers
+    #
+    # returns all the users who don't have the manager role.
     def acts_as_user(*args)
       include RoleModel
 

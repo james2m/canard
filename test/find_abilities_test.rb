@@ -41,7 +41,7 @@ describe Canard do
     
     it "raises a deprecation warning" do
       assert_deprecated do
-        Canard.abilities_for(:this) { puts 'that' }
+        Canard.abilities_for(:this) { return 'that' }
       end
     end
     
