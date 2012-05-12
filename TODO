@@ -1,9 +1,13 @@
+0.4.0
+* Make the roles_attribute_name configureable in UserModel.
+* Make the Ability user referece configureable in Ability.
 * Test the generators.
-* Test the railtie
-* Expand the tests to produce all the standard abilities: index,show,read,new,create,edit,update,destroy.
+* Test the railtie (currently implicity tested in dummy app).
+* Add upgrade generator to move the now deprecated definitions to the new syntax.
+* Remove old definition syntax and therefore deprecations.
+* Remove ActiveSupport runtime dependency (which is just used for deprecation warnings).
+0.5.0
+* Abstract out the ActiveRecord extensions into a model adapter to become framework independent.
+* Expand the generated tests to produce all the standard abilities: index,show,read,new,create,edit,update,destroy.
 * Add test unit generator.
 * Add install generator to allow overriding of the default tests.
-* Make the Ability user referece configureable in Ability.
-* Abstract out the ActiveRecord extensions into a model adapter.
-* Make the roles_attribute_name configureable in UserModel.
-* Remove ActiveSupport runtime dependency.
