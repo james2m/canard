@@ -147,8 +147,11 @@ to accept pull requests for tested Rails 2.x updates if anybody is game.
 
 == Contributors
 
+    git log | grep Author | sort | uniq
+
 * James McCarthy
 * Joey Geiger
+* Morton Jonuschat
 
 == Credits
 
