@@ -3,4 +3,7 @@
 * Expand the tests to produce all the standard abilities: index,show,read,new,create,edit,update,destroy.
 * Add test unit generator.
 * Add install generator to allow overriding of the default tests.
-* Make the Ability user referece configureable.
+* Make the Ability user referece configureable in Ability.
+* Abstract out the ActiveRecord extensions into a model adapter.
+* Make the roles_attribute_name configureable in UserModel.
+* Remove ActiveSupport runtime dependency.
