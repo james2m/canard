@@ -11,10 +11,23 @@ module Canard
     #
     #   end
     #
+    # If using Canard with a non ActiveRecord class you can still assign roles but you will need to
+    # extend the class with Canard::UserModel and add a roles_mask attribute.
+    #
+    #   class User
+    #
+    #     extend Canard::UserModel
+    #
+    #     attr_accessor :roles_mask
+    #
+    #     acts_as_user :roles =>  :manager, :admin
+    #
+    #   end
+    #
     # == Scopes
     #
     # Beyond applying the roles to model acts_as_user also creates some useful scopes on the User
-    # model;
+    # model for ActiveRecord models;
     #
     #   User.with_any_role(:manager, :admin)
     #
@@ -40,13 +53,13 @@ module Canard
     #
     # returns all the users who don't have the manager role.
     def acts_as_user(*args)
-      if table_exists?
-        include RoleModel
+      include RoleModel
 
-        options = args.extract_options!.symbolize_keys
+      options = args.extract_options!.symbolize_keys
 
-        roles options[:roles] if options.has_key?(:roles) && column_names.include?(roles_attribute_name.to_s)
+      roles options[:roles] if options.has_key?(:roles) && has_roles_mask_attribute? || has_roles_mask_accessors?
 
+      if respond_to?(:table_exists?) && table_exists?
         valid_roles.each do |role|
           define_scopes_for_role role
         end
@@ -62,6 +75,14 @@ module Canard
     end
 
     private
+
+    def has_roles_mask_accessors?
+      [roles_attribute_name, :"#{roles_attribute_name}="].all? { |accessor| instance_methods.include?(accessor) }
+    end
+
+    def has_roles_mask_attribute?
+      respond_to?(:column_names) && column_names.include?(roles_attribute_name.to_s)
+    end
 
     def define_scopes_for_role(role)
       include_scope   = role.to_s.pluralize

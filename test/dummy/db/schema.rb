@@ -21,11 +21,11 @@ ActiveRecord::Schema.define(:version => 20120430083231) do
   end
 
   create_table "user_without_roles", :force => true do |t|
-    t.string "roles_mask"
+    t.integer "roles_mask"
   end
 
   create_table "users", :force => true do |t|
-    t.string "roles_mask"
+    t.integer "roles_mask"
   end
 
 end

@@ -2,11 +2,11 @@ require 'test_helper'
 require 'canard'
 
 describe Canard::UserModel do
-  
+
   before do
     Canard.abilities_path = 'abilities'
   end
-  
+
   # Sanity test
   it "must be an user" do
     user = User.new
@@ -16,44 +16,61 @@ describe Canard::UserModel do
     user = UserWithoutRoleMask.new
     user.must_be_instance_of UserWithoutRoleMask
   end
-  
+
   describe 'acts_as_user' do
-    
+
     it 'should add role_model to this model' do
       User.included_modules.must_include RoleModel
       User.must_respond_to :roles
     end
-    
+
     describe 'on a model with a role mask' do
-      
+
       describe 'and :roles => [] specified' do
-      
-        it 'should set the valid_roles for the class' do
+
+        it 'sets the valid_roles for the class' do
           User.valid_roles.must_equal [:viewer, :author, :admin]
         end
-        
+
       end
-      
+
       describe 'with no :roles => [] specified' do
-        
-        it 'should not set any roles' do
+
+        it 'sets no roles' do
           UserWithoutRole.valid_roles.must_equal []
         end
       end
-      
+
     end
-      
-    describe 'with no roles_mask' do
-      
-      it 'should not set any roles' do
+
+    describe 'on a model with no roles_mask' do
+
+      it 'sets no roles' do
         UserWithoutRole.valid_roles.must_equal []
       end
     end
-    
+
+    describe "on a non ActiveRecord User class" do
+
+      describe "with a roles_mask attribute" do
+
+        it "assigns the roles" do
+          PlainRubyUser.valid_roles.must_equal [:viewer, :author, :admin]
+        end
+      end
+
+      describe "with no roles_mask" do
+
+        it "sets no roles" do
+          PlainRubyNonUser.valid_roles.must_equal []
+        end
+      end
+
+    end
   end
 
   describe "scopes" do
-    
+
     before do
       @no_role             = User.create
       @admin_author_viewer = User.create(:roles => [:admin, :author, :viewer])
@@ -62,38 +79,38 @@ describe Canard::UserModel do
       @admin_only          = User.create(:roles => [:admin])
       @author_only         = User.create(:roles => [:author])
     end
-    
+
     after do
       User.delete_all
     end
-    
+
     describe "on models with roles" do
-      
+
       subject { User }
-      
-      it "should add a scope to return instances with each role" do
+
+      it "adds a scope to return instances with each role" do
         subject.must_respond_to :admins
         subject.must_respond_to :authors
         subject.must_respond_to :viewers
       end
-      
-      it "should add a scope to return instances without each role" do
+
+      it "adds a scope to return instances without each role" do
         subject.must_respond_to :non_admins
         subject.must_respond_to :non_authors
         subject.must_respond_to :non_viewers
       end
-      
+
       describe "finding instances with a role" do
-        
+
         describe "admins scope" do
 
           subject { User.admins.sort_by(&:id) }
 
-          it "should return only admins" do
+          it "returns only admins" do
             subject.must_equal [@admin_author_viewer, @admin_only].sort_by(&:id)
           end
 
-          it "should not return non admins" do
+          it "doesn't return non admins" do
             subject.wont_include @no_role
             subject.wont_include @author_viewer
             subject.wont_include @author_only
@@ -106,11 +123,11 @@ describe Canard::UserModel do
 
           subject { User.authors.sort_by(&:id) }
 
-          it "should return only authors" do
+          it "returns only authors" do
             subject.must_equal [@admin_author_viewer, @author_viewer, @author_only].sort_by(&:id)
           end
 
-          it "should not return non authors" do
+          it "doesn't return non authors" do
             subject.wont_include @no_role
             subject.wont_include @admin_only
             subject.wont_include @viewer
@@ -122,11 +139,11 @@ describe Canard::UserModel do
 
           subject { User.viewers.sort_by(&:id) }
 
-          it "should return only viewers" do
+          it "returns only viewers" do
             subject.must_equal [@admin_author_viewer, @author_viewer, @viewer].sort_by(&:id)
           end
 
-          it "should not return non authors" do
+          it "doesn't return non authors" do
             subject.wont_include @no_role
             subject.wont_include @admin_only
             subject.wont_include @author_only
@@ -135,18 +152,18 @@ describe Canard::UserModel do
         end
 
       end
-      
+
       describe "finding instances without a role" do
-        
+
         describe "non_admins scope" do
 
           subject { User.non_admins.sort_by(&:id) }
 
-          it "should return only non_admins" do
+          it "returns only non_admins" do
             subject.must_equal [@no_role, @author_viewer, @viewer, @author_only].sort_by(&:id)
           end
 
-          it "should not return admins" do
+          it "doesn't return admins" do
             subject.wont_include @admin_author_viewer
             subject.wont_include @admin_only
           end
@@ -157,11 +174,11 @@ describe Canard::UserModel do
 
           subject { User.non_authors.sort_by(&:id) }
 
-          it "should return only non_authors" do
+          it "returns only non_authors" do
             subject.must_equal [@no_role, @viewer, @admin_only].sort_by(&:id)
           end
 
-          it "should not return authors" do
+          it "doesn't return authors" do
             subject.wont_include @admin_author_viewer
             subject.wont_include @author_viewer
             subject.wont_include @author_only
@@ -173,11 +190,11 @@ describe Canard::UserModel do
 
           subject { User.non_viewers.sort_by(&:id) }
 
-          it "should return only non_viewers" do
+          it "returns only non_viewers" do
             subject.must_equal [@no_role, @admin_only, @author_only].sort_by(&:id)
           end
 
-          it "should not return viewers" do
+          it "doesn't return viewers" do
             subject.wont_include @admin_author_viewer
             subject.wont_include @author_viewer
             subject.wont_include @viewer
@@ -186,18 +203,18 @@ describe Canard::UserModel do
         end
 
       end
-      
+
       describe "with_any_role" do
-        
+
         describe "specifying admin only" do
 
           subject { User.with_any_role(:admin).sort_by(&:id) }
 
-          it "should return only admins" do
+          it "returns only admins" do
             subject.must_equal [@admin_author_viewer, @admin_only].sort_by(&:id)
           end
 
-          it "should not return non admins" do
+          it "doesn't return non admins" do
             subject.wont_include @no_role
             subject.wont_include @author_viewer
             subject.wont_include @author_only
@@ -210,11 +227,11 @@ describe Canard::UserModel do
 
           subject { User.with_any_role(:author).sort_by(&:id) }
 
-          it "should return only authors" do
+          it "returns only authors" do
             subject.must_equal [@admin_author_viewer, @author_viewer, @author_only].sort_by(&:id)
           end
 
-          it "should not return non authors" do
+          it "doesn't return non authors" do
             subject.wont_include @no_role
             subject.wont_include @admin_only
             subject.wont_include @viewer
@@ -226,11 +243,11 @@ describe Canard::UserModel do
 
           subject { User.with_any_role(:viewer).sort_by(&:id) }
 
-          it "should return only viewers" do
+          it "returns only viewers" do
             subject.must_equal [@admin_author_viewer, @author_viewer, @viewer].sort_by(&:id)
           end
 
-          it "should not return non authors" do
+          it "doesn't return non authors" do
             subject.wont_include @no_role
             subject.wont_include @admin_only
             subject.wont_include @author_only
@@ -242,11 +259,11 @@ describe Canard::UserModel do
 
           subject { User.with_any_role(:admin, :author).sort_by(&:id) }
 
-          it "should return only admins and authors" do
+          it "returns only admins and authors" do
             subject.must_equal [@admin_author_viewer, @author_viewer, @admin_only, @author_only].sort_by(&:id)
           end
 
-          it "should not return non admins or authors" do
+          it "doesn't return non admins or authors" do
             subject.wont_include @no_role
             subject.wont_include @viewer
           end
@@ -257,11 +274,11 @@ describe Canard::UserModel do
 
           subject { User.with_any_role(:admin, :viewer).sort_by(&:id) }
 
-          it "should return only admins and viewers" do
+          it "returns only admins and viewers" do
             subject.must_equal [@admin_author_viewer, @author_viewer, @admin_only, @viewer].sort_by(&:id)
           end
 
-          it "should not return non admins or viewers" do
+          it "doesn't return non admins or viewers" do
             subject.wont_include @no_role
             subject.wont_include @author_only
           end
@@ -272,11 +289,11 @@ describe Canard::UserModel do
 
           subject { User.with_any_role(:author, :viewer).sort_by(&:id) }
 
-          it "should return only authors and viewers" do
+          it "returns only authors and viewers" do
             subject.must_equal [@admin_author_viewer, @author_viewer, @author_only, @viewer].sort_by(&:id)
           end
 
-          it "should not return non authors or viewers" do
+          it "doesn't return non authors or viewers" do
             subject.wont_include @no_role
             subject.wont_include @admin_only
           end
@@ -287,29 +304,29 @@ describe Canard::UserModel do
 
           subject { User.with_any_role(:admin, :author, :viewer).sort_by(&:id) }
 
-          it "should return only admins, authors and viewers" do
+          it "returns only admins, authors and viewers" do
             subject.must_equal [@admin_author_viewer, @author_viewer, @admin_only, @author_only, @viewer].sort_by(&:id)
           end
 
-          it "should not return non admins, authors or viewers" do
+          it "doesn't return non admins, authors or viewers" do
             subject.wont_include @no_role
           end
 
         end
 
       end
-      
+
       describe "with_all_roles" do
-        
+
         describe "specifying admin only" do
 
           subject { User.with_all_roles(:admin).sort_by(&:id) }
 
-          it "should return only admins" do
+          it "returns only admins" do
             subject.must_equal [@admin_author_viewer, @admin_only].sort_by(&:id)
           end
 
-          it "should not return non admins" do
+          it "doesn't return non admins" do
             subject.wont_include @no_role
             subject.wont_include @author_viewer
             subject.wont_include @author_only
@@ -322,11 +339,11 @@ describe Canard::UserModel do
 
           subject { User.with_all_roles(:author).sort_by(&:id) }
 
-          it "should return only authors" do
+          it "returns only authors" do
             subject.must_equal [@admin_author_viewer, @author_viewer, @author_only].sort_by(&:id)
           end
 
-          it "should not return non authors" do
+          it "doesn't return non authors" do
             subject.wont_include @no_role
             subject.wont_include @admin_only
             subject.wont_include @viewer
@@ -338,11 +355,11 @@ describe Canard::UserModel do
 
           subject { User.with_all_roles(:viewer).sort_by(&:id) }
 
-          it "should return only viewers" do
+          it "returns only viewers" do
             subject.must_equal [@admin_author_viewer, @author_viewer, @viewer].sort_by(&:id)
           end
 
-          it "should not return non authors" do
+          it "doesn't return non authors" do
             subject.wont_include @no_role
             subject.wont_include @admin_only
             subject.wont_include @author_only
@@ -354,11 +371,11 @@ describe Canard::UserModel do
 
           subject { User.with_all_roles(:admin, :author).sort_by(&:id) }
 
-          it "should return only admins and authors" do
+          it "returns only admins and authors" do
             subject.must_equal [@admin_author_viewer].sort_by(&:id)
           end
 
-          it "should not return non admin and authors" do
+          it "doesn't return non admin and authors" do
             subject.wont_include @no_role
             subject.wont_include @author_viewer
             subject.wont_include @author_only
@@ -372,11 +389,11 @@ describe Canard::UserModel do
 
           subject { User.with_all_roles(:admin, :viewer).sort_by(&:id) }
 
-          it "should return only admins and viewers" do
+          it "returns only admins and viewers" do
             subject.must_equal [@admin_author_viewer].sort_by(&:id)
           end
 
-          it "should not return non admins or viewers" do
+          it "doesn't return non admins or viewers" do
             subject.wont_include @no_role
             subject.wont_include @author_viewer
             subject.wont_include @author_only
@@ -390,11 +407,11 @@ describe Canard::UserModel do
 
           subject { User.with_all_roles(:author, :viewer).sort_by(&:id) }
 
-          it "should return only authors and viewers" do
+          it "returns only authors and viewers" do
             subject.must_equal [@admin_author_viewer, @author_viewer].sort_by(&:id)
           end
 
-          it "should not return non authors or viewers" do
+          it "doesn't return non authors or viewers" do
             subject.wont_include @no_role
             subject.wont_include @admin_only
             subject.wont_include @author_only
@@ -407,11 +424,11 @@ describe Canard::UserModel do
 
           subject { User.with_all_roles(:admin, :author, :viewer).sort_by(&:id) }
 
-          it "should return only admins, authors and viewers" do
+          it "returns only admins, authors and viewers" do
             subject.must_equal [@admin_author_viewer].sort_by(&:id)
           end
 
-          it "should not return non admins, authors or viewers" do
+          it "doesn't return non admins, authors or viewers" do
             subject.wont_include @no_role
             subject.wont_include @author_viewer
             subject.wont_include @author_only
@@ -422,9 +439,26 @@ describe Canard::UserModel do
         end
 
       end
-      
+
+    end
+
+    describe "on a non ActiveRecord class" do
+
+      subject { PlainRubyUser }
+
+      it "creates no scope methods" do
+        subject.wont_respond_to :admins
+        subject.wont_respond_to :authors
+        subject.wont_respond_to :viewers
+        subject.wont_respond_to :non_admins
+        subject.wont_respond_to :non_authors
+        subject.wont_respond_to :non_viewers
+        subject.wont_respond_to :with_any_role
+        subject.wont_respond_to :with_all_roles
+      end
+
     end
 
   end
-  
+
 end
