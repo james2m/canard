@@ -77,7 +77,10 @@ module Canard
     private
 
     def has_roles_mask_accessors?
-      [roles_attribute_name, :"#{roles_attribute_name}="].all? { |accessor| instance_methods.include?(accessor) }
+      instance_method_names = instance_methods.map { |method_name| method_name.to_s }
+      [roles_attribute_name.to_s, "#{roles_attribute_name}="].all? do |accessor| 
+        instance_method_names.include?(accessor)
+      end
     end
 
     def has_roles_mask_attribute?
