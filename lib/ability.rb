@@ -54,11 +54,8 @@ class Ability
   
   private
   
-  def ability_definitions
-    Canard.ability_definitions
-  end
-  
   def append_abilities(role)
+    ability_definitions = Canard.ability_definitions
     instance_eval(&ability_definitions[role]) if ability_definitions.has_key?(role)
   end
 
