@@ -19,40 +19,61 @@ describe Canard::UserModel do
 
   describe 'acts_as_user' do
 
-    it 'should add role_model to this model' do
+    it 'adds role_model to the class' do
       User.included_modules.must_include RoleModel
       User.must_respond_to :roles
     end
 
-    describe 'on a model with a role mask' do
+    describe "on an ActiveRecord model" do
 
-      describe 'and :roles => [] specified' do
+      describe 'with a role_mask' do
 
-        it 'sets the valid_roles for the class' do
-          User.valid_roles.must_equal [:viewer, :author, :admin]
+        describe 'and :roles => [] specified' do
+
+          it 'sets the valid_roles for the class' do
+            User.valid_roles.must_equal [:viewer, :author, :admin]
+          end
+
+        end
+
+        describe 'and no :roles => [] specified' do
+
+          it 'sets no roles' do
+            UserWithoutRole.valid_roles.must_equal []
+          end
         end
 
       end
 
-      describe 'with no :roles => [] specified' do
+      describe 'with no roles_mask' do
 
         it 'sets no roles' do
           UserWithoutRole.valid_roles.must_equal []
         end
       end
 
-    end
+      describe "with no table" do
+        
+        subject { Class.new(ActiveRecord::Base) }
 
-    describe 'on a model with no roles_mask' do
-
-      it 'sets no roles' do
-        UserWithoutRole.valid_roles.must_equal []
+        it "sets no roles" do
+          subject.class_eval { acts_as_user :roles => [:admin] }
+          subject.valid_roles.must_equal []
+        end
+        
+        it "does not raise any errors" do
+          proc { subject.class_eval { acts_as_user :roles => [:admin] } }.must_be_silent
+        end
+        
+        it "returns nil" do
+          subject.class_eval { acts_as_user :roles => [:admin] }.must_be_nil
+        end
       end
     end
+    
+    describe "on a regular Ruby class" do
 
-    describe "on a non ActiveRecord User class" do
-
-      describe "with a roles_mask attribute" do
+      describe "with a roles_mask" do
 
         it "assigns the roles" do
           PlainRubyUser.valid_roles.must_equal [:viewer, :author, :admin]
@@ -65,26 +86,25 @@ describe Canard::UserModel do
           PlainRubyNonUser.valid_roles.must_equal []
         end
       end
-
     end
   end
 
   describe "scopes" do
 
-    before do
-      @no_role             = User.create
-      @admin_author_viewer = User.create(:roles => [:admin, :author, :viewer])
-      @author_viewer       = User.create(:roles => [:author, :viewer])
-      @viewer              = User.create(:roles => [:viewer])
-      @admin_only          = User.create(:roles => [:admin])
-      @author_only         = User.create(:roles => [:author])
-    end
+    describe "on an ActiveRecord model with roles" do
 
-    after do
-      User.delete_all
-    end
+      before do
+        @no_role             = User.create
+        @admin_author_viewer = User.create(:roles => [:admin, :author, :viewer])
+        @author_viewer       = User.create(:roles => [:author, :viewer])
+        @viewer              = User.create(:roles => [:viewer])
+        @admin_only          = User.create(:roles => [:admin])
+        @author_only         = User.create(:roles => [:author])
+      end
 
-    describe "on models with roles" do
+      after do
+        User.delete_all
+      end
 
       subject { User }
 
@@ -442,7 +462,7 @@ describe Canard::UserModel do
 
     end
 
-    describe "on a non ActiveRecord class" do
+    describe "on a plain Ruby class" do
 
       subject { PlainRubyUser }
 

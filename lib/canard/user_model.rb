@@ -59,7 +59,7 @@ module Canard
 
       roles options[:roles] if options.has_key?(:roles) && has_roles_mask_attribute? || has_roles_mask_accessors?
 
-      if respond_to?(:table_exists?) && table_exists?
+      if active_record_table?
         valid_roles.each do |role|
           define_scopes_for_role role
         end
@@ -76,6 +76,10 @@ module Canard
 
     private
 
+    def active_record_table?
+      respond_to?(:table_exists?) && table_exists?
+    end
+
     def has_roles_mask_accessors?
       instance_method_names = instance_methods.map { |method_name| method_name.to_s }
       [roles_attribute_name.to_s, "#{roles_attribute_name}="].all? do |accessor| 
@@ -84,7 +88,7 @@ module Canard
     end
 
     def has_roles_mask_attribute?
-      respond_to?(:column_names) && column_names.include?(roles_attribute_name.to_s)
+      active_record_table? && column_names.include?(roles_attribute_name.to_s)
     end
 
     def define_scopes_for_role(role)
