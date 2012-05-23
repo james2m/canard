@@ -155,7 +155,7 @@ to accept pull requests for tested Rails 2.x updates if anybody is game.
 
 == Credits
 
-Thanks to Ryan Bates for creating the awesome CanCan (http://wiki.github.com/ryanb/cancan/role-based-authorization) 
+Thanks to Ryan Bates for creating the awesome CanCan (http://wiki.github.com/ryanb/cancan) 
 and Martin Rehfeld for implementing Role Based Authorization in the form of RoleModel (http://github.com/martinrehfeld/role_model).
 
 == Copyright
