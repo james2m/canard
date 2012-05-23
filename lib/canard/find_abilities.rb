@@ -21,6 +21,11 @@ module Canard
 
   end
 
+  def self.load_paths
+    Abilities.definition_paths.map { |path| File.join(Rails.root, path) }
+  end
+
+  # TODO remove at version 0.4.0
   def self.find_abilities #:nodoc:
     absolute_abilities_path = File.expand_path(abilities_path)
 
@@ -30,13 +35,12 @@ module Canard
       end
     end
     
-    Abilities.definition_paths.each do |path|
-      Dir[File.join(Rails.root, path, '**', '*.rb')].sort.each do |file|
+    load_paths.each do |path|
+      Dir[File.join(path, '**', '*.rb')].sort.each do |file|
         load file
       end
     end
 
   end
-  
   
 end
