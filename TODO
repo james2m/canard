@@ -1,3 +1,4 @@
+* Correctly quote table.column in role_mask_column
 0.4.0
 * Make the roles_attribute_name configureable in UserModel.
 * Make the Ability user referece configureable in Ability.
