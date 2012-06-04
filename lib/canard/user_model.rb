@@ -111,7 +111,7 @@ module Canard
     end
 
     def role_mask_column
-      %{"#{table_name}"."#{roles_attribute_name}"}
+      "#{quoted_table_name}.#{connection.quote_column_name roles_attribute_name}"
     end
 
   end
