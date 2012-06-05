@@ -25,8 +25,8 @@ module Canard
     #
     # == Scopes
     #
-    # Beyond applying the roles to model acts_as_user also creates some useful scopes on the User
-    # model for ActiveRecord models;
+    # Beyond applying the roles to the model, acts_as_user also creates some useful scopes for
+    # ActiveRecord models;
     #
     #   User.with_any_role(:manager, :admin)
     #
@@ -64,6 +64,8 @@ module Canard
 
     private
 
+    # This is overridden by the ActiveRecord adapter as the attribute accessors
+    # don't show up in instance_methods.
     def has_roles_mask_accessors?
       instance_method_names = instance_methods.map { |method_name| method_name.to_s }
       [roles_attribute_name.to_s, "#{roles_attribute_name}="].all? do |accessor| 
