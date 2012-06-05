@@ -1,7 +1,9 @@
 module Canard
   module Adapters
     module ActiveRecord
-      
+
+      private
+
       def add_role_scopes
         if active_record_table?
           valid_roles.each do |role|
