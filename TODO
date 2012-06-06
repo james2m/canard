@@ -3,7 +3,7 @@
 * Add UserModel#ability convenience method.
 0.4.0
 * Make framework agnostic.
-* Split the test suite so Rails is only required for Rails integration.
+* Split the test suite so Rails is only required for Rails integration. http://blog.railsware.com/2012/01/07/testing-gem-integration-with-multiple-ruby-frameworks/
 * Test the railtie (currently implicity tested in dummy app).
 * Add upgrade generator to move the now deprecated definitions to the new syntax.
 * Remove old definition syntax and therefore deprecations.
