@@ -55,7 +55,7 @@ module Canard
       include RoleModel
       extend Adapters::ActiveRecord if defined?(ActiveRecord) && self < ActiveRecord::Base
 
-      options = args.extract_options!.symbolize_keys
+      options = args.last.is_a?(Hash) ? args.pop : {}
 
       roles options[:roles] if options.has_key?(:roles) && has_roles_mask_accessors?
 
