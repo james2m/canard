@@ -1,90 +1,50 @@
 require 'test_helper'
-require 'canard'
 
-describe Canard::UserModel do
-
-  before do
-    Canard.abilities_path = 'abilities'
-  end
-
-  # Sanity test
-  it "must be an user" do
-    user = User.new
-    user.must_be_instance_of User
-    user = UserWithoutRole.new
-    user.must_be_instance_of UserWithoutRole
-    user = UserWithoutRoleMask.new
-    user.must_be_instance_of UserWithoutRoleMask
-  end
+describe Canard::Adapters::ActiveRecord do
 
   describe 'acts_as_user' do
 
-    it 'adds role_model to the class' do
-      User.included_modules.must_include RoleModel
-      User.must_respond_to :roles
-    end
+    describe 'with a role_mask' do
 
-    describe "on an ActiveRecord model" do
-
-      describe 'with a role_mask' do
-
-        describe 'and :roles => [] specified' do
-
-          it 'sets the valid_roles for the class' do
-            User.valid_roles.must_equal [:viewer, :author, :admin]
-          end
-
-        end
-
-        describe 'and no :roles => [] specified' do
-
-          it 'sets no roles' do
-            UserWithoutRole.valid_roles.must_equal []
-          end
+      describe 'and :roles => [] specified' do
+        
+        it 'sets the valid_roles for the class' do
+          User.valid_roles.must_equal [:viewer, :author, :admin]
         end
 
       end
 
-      describe 'with no roles_mask' do
+      describe 'and no :roles => [] specified' do
 
         it 'sets no roles' do
           UserWithoutRole.valid_roles.must_equal []
         end
       end
 
-      describe "with no table" do
-        
-        subject { Class.new(ActiveRecord::Base) }
+    end
 
-        it "sets no roles" do
-          subject.class_eval { acts_as_user :roles => [:admin] }
-          subject.valid_roles.must_equal []
-        end
-        
-        it "does not raise any errors" do
-          proc { subject.class_eval { acts_as_user :roles => [:admin] } }.must_be_silent
-        end
-        
-        it "returns nil" do
-          subject.class_eval { acts_as_user :roles => [:admin] }.must_be_nil
-        end
+    describe 'with no roles_mask' do
+
+      it 'sets no roles' do
+        UserWithoutRoleMask.valid_roles.must_equal []
       end
     end
-    
-    describe "on a regular Ruby class" do
 
-      describe "with a roles_mask" do
+    describe "with no table" do
+        
+      subject { Class.new(ActiveRecord::Base) }
 
-        it "assigns the roles" do
-          PlainRubyUser.valid_roles.must_equal [:viewer, :author, :admin]
-        end
+      it "sets no roles" do
+        subject.class_eval { acts_as_user :roles => [:admin] }
+        subject.valid_roles.must_equal []
       end
-
-      describe "with no roles_mask" do
-
-        it "sets no roles" do
-          PlainRubyNonUser.valid_roles.must_equal []
-        end
+        
+      it "does not raise any errors" do
+        proc { subject.class_eval { acts_as_user :roles => [:admin] } }.must_be_silent
+      end
+        
+      it "returns nil" do
+        subject.class_eval { acts_as_user :roles => [:admin] }.must_be_nil
       end
     end
   end
@@ -461,24 +421,6 @@ describe Canard::UserModel do
       end
 
     end
-
-    describe "on a plain Ruby class" do
-
-      subject { PlainRubyUser }
-
-      it "creates no scope methods" do
-        subject.wont_respond_to :admins
-        subject.wont_respond_to :authors
-        subject.wont_respond_to :viewers
-        subject.wont_respond_to :non_admins
-        subject.wont_respond_to :non_authors
-        subject.wont_respond_to :non_viewers
-        subject.wont_respond_to :with_any_role
-        subject.wont_respond_to :with_all_roles
-      end
-
-    end
-
   end
 
 end

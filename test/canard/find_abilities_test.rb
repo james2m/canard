@@ -9,6 +9,7 @@ describe Canard do
     # Stop the deprecation warnings coming to stderr for these tests.
     ActiveSupport::Deprecation.behavior = :notify
     
+    Canard::Abilities.default_path = File.expand_path('../../dummy/app/abilities', __FILE__)
     Canard.abilities_path = File.expand_path('../abilities', __FILE__)
   end
   

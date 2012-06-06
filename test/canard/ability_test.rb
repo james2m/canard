@@ -3,6 +3,7 @@ require 'test_helper'
 describe Ability do
   
   before do
+    Canard::Abilities.default_path = File.expand_path('../../dummy/app/abilities', __FILE__)
     # reload abilities because the reloader will have removed them after the railtie ran
     Canard.find_abilities
   end

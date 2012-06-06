@@ -6,3 +6,4 @@ pkg/*
 Gemfile.lock
 *.sqlite3
 *.log
+.tm_properties
