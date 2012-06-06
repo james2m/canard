@@ -34,7 +34,7 @@ describe Ability do
 
     end
     
-    describe "for a user with author role" do
+    describe "with a user that has author role" do
       
       let(:user) { User.create(:roles => [:author]) }
       let(:member) { Member.create(:user => user) }
@@ -64,7 +64,7 @@ describe Ability do
       
     end
 
-    describe "for a user with admin and author role" do
+    describe "with a user that has admin and author roles" do
       
       let(:user) { User.create(:roles => [:author, :admin]) }
       let(:member) { Member.create(:user => user) }
@@ -93,7 +93,7 @@ describe Ability do
       
     end
     
-    describe "for a guest" do
+    describe "with no user" do
       
       subject { Ability.new }
       
@@ -108,6 +108,45 @@ describe Ability do
         subject.cannot?(:show, User)
         subject.cannot?(:show, Member)
       end
+    end
+    
+    describe "with an instance of an anonymous class that has author role" do
+      
+      let(:klass) do
+        Class.new do
+          extend Canard::UserModel
+          attr_accessor :roles_mask
+          acts_as_user :roles => [:author, :admin]
+          def initialize(*roles); self.roles = roles; end
+        end
+      end
+      let(:instance) { klass.new(:author) }
+
+      describe "for base class abilities" do
+        
+        it "does nothing" do
+          proc { Ability.new(instance) }.must_be_silent
+        end
+      end
+      
+      describe "for assigned roles" do
+        
+        subject { Ability.new(instance) }
+        
+        it "has all the abilities of an author" do
+          subject.can?(:new, Post).must_equal true
+          subject.can?(:create, Post).must_equal true
+          subject.can?(:edit, Post).must_equal true
+          subject.can?(:update, Post).must_equal true
+          subject.can?(:show, Post).must_equal true
+          subject.can?(:index, Post).must_equal true
+        end
+      
+        it "has no admin abilities" do
+          subject.cannot?(:destroy, Post).must_equal true
+        end
+      end
+      
     end
   end
   
