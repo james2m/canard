@@ -8,6 +8,7 @@ class InitializeDb < ActiveRecord::Migration
       t.integer     :roles_mask
     end
     create_table :user_without_role_masks, :force => true do |t|
+      t.integer     :my_roles_mask
     end
   
     create_table :members, :force => true do |t|

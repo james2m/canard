@@ -6,7 +6,7 @@ module Canard
     #
     #   class User < ActiveRecord::Base
     #
-    #     acts_as_user :roles =>  :manager, :admin
+    #     acts_as_user :roles => [:manager, :admin]
     #
     #   end
     #
@@ -19,9 +19,14 @@ module Canard
     #
     #     attr_accessor :roles_mask
     #
-    #     acts_as_user :roles =>  :manager, :admin
+    #     acts_as_user :roles => [:manager, :admin]
     #
     #   end
+    #
+    # You can choose the attribute used for the roles_mask by specifying :roles_mask. If no
+    # roles_mask is specified it uses RoleModel's default of 'roles_mask'
+    #
+    #    acts_as_user :roles_mask => :my_roles_mask, :roles => [:manager, :admin]
     #
     # == Scopes
     #
@@ -57,6 +62,8 @@ module Canard
 
       options = args.last.is_a?(Hash) ? args.pop : {}
 
+      roles_attribute options[:roles_mask] if options.has_key?(:roles_mask)
+      
       roles options[:roles] if options.has_key?(:roles) && has_roles_mask_accessors?
 
       add_role_scopes if respond_to?(:add_role_scopes, true)

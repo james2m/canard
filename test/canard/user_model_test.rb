@@ -4,50 +4,63 @@ describe Canard::UserModel do
 
   describe 'acts_as_user' do
 
-    describe "on a regular Ruby class" do
+    describe "integrating RoleModel" do
 
-      describe "integrating RoleModel" do
+      before do
+        PlainRubyUser.acts_as_user
+      end
+
+      it 'adds role_model to the class' do
+        PlainRubyUser.included_modules.must_include RoleModel
+        PlainRubyUser.must_respond_to :roles
+      end
+    end
+
+    describe "with a roles_mask" do
+
+      describe 'and :roles => [] specified' do
+
+        before do
+          PlainRubyUser.acts_as_user :roles => [:viewer, :author, :admin]
+        end
+
+        it 'sets the valid_roles for the class' do
+          PlainRubyUser.valid_roles.must_equal [:viewer, :author, :admin]
+        end
+      end
+
+      describe 'and no :roles => [] specified' do
 
         before do
           PlainRubyUser.acts_as_user
         end
 
-        it 'adds role_model to the class' do
-          PlainRubyUser.included_modules.must_include RoleModel
-          PlainRubyUser.must_respond_to :roles
+        it 'sets no roles' do
+          PlainRubyUser.valid_roles.must_equal []
         end
       end
+    end
 
-      describe "with a roles_mask" do
-
-        describe 'and :roles => [] specified' do
-
-          before do
-            PlainRubyUser.acts_as_user :roles => [:viewer, :author, :admin]
-          end
-
-          it 'sets the valid_roles for the class' do
-            PlainRubyUser.valid_roles.must_equal [:viewer, :author, :admin]
-          end
-        end
-
-        describe 'and no :roles => [] specified' do
-
-          before do
-            PlainRubyUser.acts_as_user
-          end
-
-          it 'sets no roles' do
-            PlainRubyUser.valid_roles.must_equal []
-          end
-        end
+    describe "with no roles_mask" do
+      
+      before do
+        PlainRubyNonUser.acts_as_user :roles => [:viewer, :author, :admin]
       end
 
-      describe "with no roles_mask" do
+      it "sets no roles" do
+        PlainRubyNonUser.valid_roles.must_equal []
+      end
+    end
+    
+    describe "setting the role_mask" do
+      
+      before do
+        PlainRubyNonUser.send :attr_accessor, :my_roles
+        PlainRubyNonUser.acts_as_user :roles => [:viewer, :author], :roles_mask => :my_roles
+      end
 
-        it "sets no roles" do
-          PlainRubyNonUser.valid_roles.must_equal []
-        end
+      it 'sets the valid_roles for the class' do
+        PlainRubyNonUser.valid_roles.must_equal [:viewer, :author]
       end
     end
   end
