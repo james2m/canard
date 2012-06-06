@@ -25,6 +25,10 @@ describe Canard::Adapters::ActiveRecord do
 
     describe 'with no roles_mask' do
 
+      before do
+        UserWithoutRoleMask.acts_as_user :roles => [:viewer, :admin]
+      end
+
       it 'sets no roles' do
         UserWithoutRoleMask.valid_roles.must_equal []
       end
@@ -47,6 +51,18 @@ describe Canard::Adapters::ActiveRecord do
         subject.class_eval { acts_as_user :roles => [:admin] }.must_be_nil
       end
     end
+    
+    describe 'with an alternative roles_mask specified' do
+
+      before do
+        UserWithoutRoleMask.acts_as_user :roles_mask => :my_roles_mask, :roles => [:viewer, :admin]
+      end
+
+      it 'sets no roles' do
+        UserWithoutRoleMask.valid_roles.must_equal [:viewer, :admin]
+      end
+    end
+
   end
 
   describe "scopes" do
