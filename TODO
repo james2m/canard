@@ -1,5 +1,4 @@
 0.4.0
-* Make the roles_attribute_name configureable in UserModel.
 * Make the Ability user referece configureable in Ability.
 * Test the generators.
 * Test the railtie (currently implicity tested in dummy app).
