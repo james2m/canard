@@ -7,7 +7,7 @@ module Canard
     attr_writer :abilities_path
     
     def abilities_path 
-      @abilities_path ||= File.expand_path('abilities', Rails.root)
+      @abilities_path ||= 'abilities'
     end
     
     def ability_definitions
@@ -22,7 +22,7 @@ module Canard
   end
 
   def self.load_paths
-    Abilities.definition_paths.map { |path| File.join(Rails.root, path) }
+    Abilities.definition_paths.map { |path| File.expand_path(path) }
   end
 
   # TODO remove at version 0.4.0
