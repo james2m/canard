@@ -37,7 +37,8 @@ class Ability
     
     if @user
       # Add the base user abilities.
-      append_abilities @user.class.name.underscore.to_sym unless @user.class.name.nil?
+      user_class_name = @user.class.name.to_s
+      append_abilities user_class_name.underscore.to_sym unless user_class_name.length == 0
     else
       # If user not set then lets create a guest
       @user = Object.new
