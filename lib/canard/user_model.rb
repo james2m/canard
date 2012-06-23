@@ -58,12 +58,13 @@ module Canard
     # returns all the users who don't have the manager role.
     def acts_as_user(*args)
       include RoleModel
+      include InstanceMethods
       extend Adapters::ActiveRecord if defined?(ActiveRecord) && self < ActiveRecord::Base
 
       options = args.last.is_a?(Hash) ? args.pop : {}
 
       roles_attribute options[:roles_mask] if options.has_key?(:roles_mask)
-      
+
       roles options[:roles] if options.has_key?(:roles) && has_roles_mask_accessors?
 
       add_role_scopes if respond_to?(:add_role_scopes, true)
@@ -78,6 +79,14 @@ module Canard
       [roles_attribute_name.to_s, "#{roles_attribute_name}="].all? do |accessor| 
         instance_method_names.include?(accessor)
       end
+    end
+
+    module InstanceMethods
+
+      def ability
+        @ability ||= Ability.new(self)
+      end
+
     end
   end
 end

@@ -1,5 +1,3 @@
-0.3.7
-* Add UserModel#ability convenience method.
 0.4.0
 * Make framework agnostic.
 * Split the test suite so Rails is only required for Rails integration. http://blog.railsware.com/2012/01/07/testing-gem-integration-with-multiple-ruby-frameworks/

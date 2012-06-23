@@ -87,5 +87,39 @@ describe Canard::UserModel do
       end
     end
   end
+end
 
+describe Canard::UserModel::InstanceMethods do
+
+  before do
+    Canard::Abilities.default_path = File.expand_path('../../dummy/app/abilities', __FILE__)
+    # reload abilities because the reloader will have removed them after the railtie ran
+    Canard.find_abilities
+  end
+
+  describe "ability" do
+
+    before do
+      PlainRubyUser.acts_as_user :roles => [:admin, :author]
+    end
+
+    subject { PlainRubyUser.new(:author).ability }
+
+    it "returns an ability for this instance" do
+      subject.must_be_instance_of Ability
+    end
+
+    it "has the users abilities" do
+      subject.can?(:new, Post).must_equal true
+      subject.can?(:create, Post).must_equal true
+      subject.can?(:edit, Post).must_equal true
+      subject.can?(:update, Post).must_equal true
+      subject.can?(:show, Post).must_equal true
+      subject.can?(:index, Post).must_equal true
+    end
+      
+    it "has no other abilities" do
+      subject.cannot?(:destroy, Post).must_equal true
+    end
+  end
 end
