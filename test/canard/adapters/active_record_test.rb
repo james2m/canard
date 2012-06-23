@@ -436,6 +436,43 @@ describe Canard::Adapters::ActiveRecord do
 
       end
 
+      describe "with_only_roles" do
+
+        describe "specifying one role" do
+
+          subject { User.with_only_roles(:admin).sort_by(&:id) }
+
+          it "returns users with just that role" do
+            subject.must_equal [@admin_only].sort_by(&:id)
+          end
+
+          it "doesn't return any other users" do
+            subject.wont_include @no_role
+            subject.wont_include @admin_author_viewer
+            subject.wont_include @author_viewer
+            subject.wont_include @author_only
+            subject.wont_include @viewer
+          end
+
+        end
+
+        describe "specifying multiple roles" do
+
+          subject { User.with_only_roles(:author, :viewer).sort_by(&:id) }
+
+          it "returns only users with no more or less roles" do
+            subject.must_equal [@author_viewer].sort_by(&:id)
+          end
+
+          it "doesn't return any other users" do
+            subject.wont_include @no_role
+            subject.wont_include @admin_author_viewer
+            subject.wont_include @admin_only
+            subject.wont_include @author_only
+            subject.wont_include @viewer
+          end
+        end
+      end
     end
   end
 

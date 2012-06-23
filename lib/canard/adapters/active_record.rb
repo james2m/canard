@@ -17,6 +17,10 @@ module Canard
           define_scope_method(:with_all_roles) do |*roles|
             where("#{role_mask_column} & :role_mask = :role_mask", { :role_mask => mask_for(*roles) })
           end
+
+          define_scope_method(:with_only_roles) do |*roles|
+            where("#{role_mask_column} = :role_mask", { :role_mask => mask_for(*roles) })
+          end
         end
       end
 

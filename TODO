@@ -1,5 +1,4 @@
 0.3.7
-* Add scope for RoleModel's #has_only_roles? method.
 * Add UserModel#ability convenience method.
 0.4.0
 * Make framework agnostic.
