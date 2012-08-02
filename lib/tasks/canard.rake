@@ -2,7 +2,7 @@ namespace :canard do
   desc 'Upgrades deprecated ability definition syntax and moves the files from abilities to app/abilities'
   task :upgrade => :environment do
     require 'rake/clean'
-    source_path = Canard.abilities_path
+    source_path = 'abilities'
     destination_path = Canard::Abilities.definition_paths.first
 
     Dir.mkdir(destination_path) unless Dir.exists?(destination_path)
