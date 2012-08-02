@@ -30,34 +30,39 @@ class Ability
   attr_reader :user
 
   def initialize(object=nil)
-    
+
     # If object has a user attribute set the user from it otherwise assume
     # this is the user.
     @user = object.respond_to?(:user) ? object.user : object
-    
+
     if @user
       # Add the base user abilities.
-      user_class_name = @user.class.name.to_s
-      append_abilities user_class_name.underscore.to_sym unless user_class_name.length == 0
+      append_abilities ability_key(@user.class.name) if @user.class.name
     else
       # If user not set then lets create a guest
       @user = Object.new
       append_abilities :guest
     end
-    
+
     # If user has roles get those abilities
     if @user.respond_to?(:roles)
       # Add roles on top of the base user abilities
       @user.roles.each { |role| append_abilities(role) }
     end
-  
+
   end
-  
+
   private
-  
-  def append_abilities(role)
+
+  def append_abilities(key)
     ability_definitions = Canard.ability_definitions
-    instance_eval(&ability_definitions[role]) if ability_definitions.has_key?(role)
+    instance_eval(&ability_definitions[key]) if ability_definitions.has_key?(key)
+  end
+
+  def ability_key(class_name)
+    class_name.gsub!('::', '')
+    class_name.gsub!(/(.)([A-Z])/,'\1_\2')
+    class_name.downcase!.to_sym
   end
 
 end
