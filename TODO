@@ -2,8 +2,6 @@
 * Make framework agnostic.
 * Split the test suite so Rails is only required for Rails integration. http://blog.railsware.com/2012/01/07/testing-gem-integration-with-multiple-ruby-frameworks/
 * Test the railtie (currently implicity tested in dummy app).
-* Add upgrade generator to move the now deprecated definitions to the new syntax.
-* Remove old definition syntax and therefore deprecations.
 * Remove ActiveSupport runtime dependency (which is just used for deprecation warnings).
 0.5.0
 * Expand the generated tests to produce all the standard abilities: index,show,read,new,create,edit,update,destroy.
