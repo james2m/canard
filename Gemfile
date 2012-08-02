@@ -6,3 +6,9 @@ gemspec
 group :test do
   gem 'rake'
 end
+
+# for CRuby, Rubinius, including Windows and RubyInstaller
+gem "sqlite3", :platform => [:ruby, :mswin, :mingw], :group => [:development, :test]
+
+# for JRuby
+gem 'activerecord-jdbcsqlite3-adapter', :platform => [:jruby], :group => [:development, :test]
