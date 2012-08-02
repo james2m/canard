@@ -5,6 +5,7 @@ require "canard/version"
 Gem::Specification.new do |s|
   s.name        = "canard"
   s.version     = Canard::VERSION
+  s.date        = `git log -1 --format="%cd" --date=short lib/canard/version.rb`
   s.authors     = ["James McCarthy"]
   s.email       = ["james2mccarthy@gmail.com"]
   s.homepage    = "https://github.com/james2m/canard"
