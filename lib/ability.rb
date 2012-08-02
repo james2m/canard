@@ -37,7 +37,8 @@ class Ability
 
     if @user
       # Add the base user abilities.
-      append_abilities ability_key(@user.class.name) if @user.class.name
+      user_class_name = String(@user.class.name)
+      append_abilities ability_key(user_class_name) unless user_class_name.empty?
     else
       # If user not set then lets create a guest
       @user = Object.new
