@@ -14,7 +14,7 @@ module Canard
 
     initializer "canard.active_record" do |app|
       ActiveSupport.on_load :active_record do
-        Canard.setup unless Canard.is_setup
+        require 'canard/adapters/active_record'
         Canard::Abilities.default_path = File.expand_path('app/abilities', Rails.root)
         extend Canard::UserModel
         Canard.find_abilities
@@ -22,10 +22,9 @@ module Canard
     end
     
     initializer "canard.mongoid" do |app|
-      ActiveSupport.on_load :mongoid do
-        Canard.setup unless Canard.is_setup
+      if defined?(Mongoid)
+        require 'canard/adapters/mongoid'
         Canard::Abilities.default_path = File.expand_path('app/abilities', Rails.root)
-        extend Canard::UserModel
         Canard.find_abilities
       end
     end
