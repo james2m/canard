@@ -24,8 +24,6 @@ module Canard
     initializer "canard.mongoid" do |app|
       if defined?(Mongoid)
         require 'canard/adapters/mongoid'
-        Canard::Abilities.default_path = File.expand_path('app/abilities', Rails.root)
-        Canard.find_abilities
       end
     end
 
