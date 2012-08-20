@@ -18,7 +18,7 @@ module Canard
         end
 
         define_scope_method(:with_only_roles) do |*roles|
-          where("this.#{roles_attribute_name} = #{mask_for(*roles)}")
+          where("this.#{roles_attribute_name} === #{mask_for(*roles)}")
         end
       end
 
@@ -35,7 +35,7 @@ module Canard
         end
 
         define_scope_method(exclude_scope) do
-          where("$or" => ["(this.#{roles_attribute_name} & #{mask_for(role)}) === #{mask_for(role)}", {"#{roles_attribute_name}" => 'null'}])
+          any_of({roles_attribute_name  => { "$exists" => false }}, {roles_attribute_name => nil}, {"$where" => "(this.#{roles_attribute_name} & #{mask_for(role)}) === 0"})
         end
       end
 
