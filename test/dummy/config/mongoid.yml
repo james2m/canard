@@ -1,0 +1,13 @@
+development:
+  sessions:
+    default:
+      database: canard_development
+      hosts:
+        - localhost:27017
+
+test:
+  sessions:
+    default:
+      database: canard_test
+      hosts:
+        - localhost:27017

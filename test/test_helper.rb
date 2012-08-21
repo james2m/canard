@@ -2,6 +2,7 @@ require 'rubygems'
 gem 'minitest'
 require 'minitest/autorun'
 require 'active_record'
+require 'mongoid'
 
 # Configure Rails Environment
 environment  = ENV["RAILS_ENV"] = 'test'
@@ -19,6 +20,9 @@ ActiveRecord::Base.establish_connection(:adapter => 'sqlite3', :database => db)
 ActiveRecord::Base.connection
 ActiveRecord::Migration.verbose = false
 ActiveRecord::Migrator.up File.expand_path('db/migrate', rails_root)
+
+# Load mongoid config
+Mongoid.load!(File.expand_path('config/mongoid.yml', rails_root), :test)
 
 # Load dummy rails app
 require File.expand_path('config/environment.rb', rails_root)
