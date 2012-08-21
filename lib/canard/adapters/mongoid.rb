@@ -9,15 +9,15 @@ module Canard
           define_scopes_for_role role
         end
 
-        define_scope_method(:with_any_role) do |*roles|
+        scope :with_any_role, ->(*roles) do
           where("(this.#{roles_attribute_name} & #{mask_for(*roles)}) > 0")
         end
 
-        define_scope_method(:with_all_roles) do |*roles|
+        scope :with_all_roles, ->(*roles) do
           where("(this.#{roles_attribute_name} & #{mask_for(*roles)}) === #{mask_for(*roles)}")
         end
 
-        define_scope_method(:with_only_roles) do |*roles|
+        scope :with_only_roles, ->(*roles) do
           where("this.#{roles_attribute_name} === #{mask_for(*roles)}")
         end
       end
@@ -29,20 +29,9 @@ module Canard
       def define_scopes_for_role(role)
         include_scope   = role.to_s.pluralize
         exclude_scope   = "non_#{include_scope}"
-
-        define_scope_method(include_scope) do
-          where("(this.#{roles_attribute_name} & #{mask_for(role)}) > 0")
-        end
-
-        define_scope_method(exclude_scope) do
-          any_of({roles_attribute_name  => { "$exists" => false }}, {roles_attribute_name => nil}, {"$where" => "(this.#{roles_attribute_name} & #{mask_for(role)}) === 0"})
-        end
-      end
-
-      def define_scope_method(method, &block)
-        (class << self; self end).class_eval do
-          define_method(method, block)
-        end
+        
+        scope include_scope, where("(this.#{roles_attribute_name} & #{mask_for(role)}) > 0")
+        scope exclude_scope, any_of({roles_attribute_name  => { "$exists" => false }}, {roles_attribute_name => nil}, {"$where" => "(this.#{roles_attribute_name} & #{mask_for(role)}) === 0"})
       end
 
     end
