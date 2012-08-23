@@ -22,7 +22,13 @@ ActiveRecord::Migration.verbose = false
 ActiveRecord::Migrator.up File.expand_path('db/migrate', rails_root)
 
 # Load mongoid config
-Mongoid.load!(File.expand_path('config/mongoid.yml', rails_root), :test)
+if Mongoid::VERSION < '3'
+  ENV["MONGOID_ENV"] = "test"
+  Mongoid.load!(File.expand_path('config/mongoid2.yml', rails_root))
+else
+  Mongoid.load!(File.expand_path('config/mongoid3.yml', rails_root), :test)
+end
+Mongoid.logger.level = :info
 
 # Load dummy rails app
 require File.expand_path('config/environment.rb', rails_root)
