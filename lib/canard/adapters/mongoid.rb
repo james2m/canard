@@ -9,15 +9,15 @@ module Canard
           define_scopes_for_role role
         end
 
-        scope :with_any_role, ->(*roles) do
+        def with_any_role(*roles)
           where("(this.#{roles_attribute_name} & #{mask_for(*roles)}) > 0")
         end
 
-        scope :with_all_roles, ->(*roles) do
+        def with_all_roles(*roles)
           where("(this.#{roles_attribute_name} & #{mask_for(*roles)}) === #{mask_for(*roles)}")
         end
 
-        scope :with_only_roles, ->(*roles) do
+        def with_only_roles(*roles)
           where("this.#{roles_attribute_name} === #{mask_for(*roles)}")
         end
       end
