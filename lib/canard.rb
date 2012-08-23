@@ -7,5 +7,3 @@ require "canard/find_abilities"
 require "ability"
 
 require 'canard/railtie' if defined?(Rails) && Rails::VERSION::MAJOR >= 3
-require 'canard/adapters/active_record' if defined?(ActiveRecord)
-

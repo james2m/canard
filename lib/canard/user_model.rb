@@ -59,9 +59,15 @@ module Canard
     def acts_as_user(*args)
       include RoleModel
       include InstanceMethods
-      extend Adapters::ActiveRecord if defined?(ActiveRecord) && self < ActiveRecord::Base
-
+      
       options = args.last.is_a?(Hash) ? args.pop : {}
+      
+      if defined?(ActiveRecord) && self < ActiveRecord::Base
+        extend Adapters::ActiveRecord
+      elsif defined?(Mongoid) && self.included_modules.include?(Mongoid::Document)
+        extend Adapters::Mongoid
+        field (options[:roles_mask] || :roles_mask), :type => Integer
+      end
 
       roles_attribute options[:roles_mask] if options.has_key?(:roles_mask)
 
