@@ -8,7 +8,14 @@ group :test do
 end
 
 # for CRuby, Rubinius, including Windows and RubyInstaller
-gem "sqlite3", :platform => [:ruby, :mswin, :mingw], :group => [:development, :test]
+group :development, :test do
+  platform :ruby, :mswin, :mingw do
+    gem "sqlite3"
+    gem "bson_ext", "~> 1.6.4"
+  end
 
-# for JRuby
-gem 'activerecord-jdbcsqlite3-adapter', :platform => [:jruby], :group => [:development, :test]
+  platform :jruby do
+    gem 'activerecord-jdbcsqlite3-adapter'
+  end
+end
+
