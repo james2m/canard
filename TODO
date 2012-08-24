@@ -1,9 +1,9 @@
-0.4.0
+0.5.0
 * Split the test suite so Rails is only required for Rails integration. http://blog.railsware.com/2012/01/07/testing-gem-integration-with-multiple-ruby-frameworks/
 * Test the railtie (currently implicity tested in dummy app).
-0.5.0
 * Expand the generated tests to produce all the standard abilities: index,show,read,new,create,edit,update,destroy.
 * Test the generators.
 * Add test unit generator.
 * Add install generator to allow overriding of the default tests.
 * Make the Ability user referece configureable in Ability.
+* Add DataMapper support.

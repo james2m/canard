@@ -194,6 +194,8 @@ wiki (https://github.com/ryanb/cancan/wiki/role-based-authorization).
 * Morton Jonuschat
 * David Butler
 
+If you feel like contributing there is a TODO list in the root with a few ideas and opportunities!
+
 == Credits
 
 Thanks to Ryan Bates for creating the awesome CanCan (http://wiki.github.com/ryanb/cancan)
