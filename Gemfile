@@ -4,8 +4,8 @@ source "http://rubygems.org"
 gemspec
 
 group :development do
-  gem 'ruby-debug', :platform => :ruby_18
-  gem 'debugger', :platform => :ruby_19
+  #gem 'ruby-debug', :platform => :ruby_18
+  #gem 'debugger', :platform => :ruby_19
 end
 
 group :test do

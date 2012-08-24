@@ -27,7 +27,7 @@ Gem::Specification.new do |s|
   else
     s.add_development_dependency "mongoid", "~> 3.0"
   end
-  s.add_development_dependency "bson_ext", "~> 1.6.4"
+  #s.add_development_dependency "bson_ext", "~> 1.6.4"
   
   s.add_runtime_dependency "cancan"
   s.add_runtime_dependency "role_model"
