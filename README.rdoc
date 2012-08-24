@@ -141,7 +141,7 @@ to accept pull requests for tested Rails 2.x updates if anybody is game.
 Canard is ORM agnostic. ActiveRecord and Mongoid (thanks David Butler) adapters are currently implemented.
 New adapters can easily be added, but you'd need to check CanCan can also support your adapter.
 
-=== Further reading
+== Further reading
 
 Canard stands on the sholders of Ryan Bates' CanCan and Martin Rehfeld's RoleModel. You can read more
 about defining abilities on the CanCan wiki (https://github.com/ryanb/cancan/wiki). Canard implements
