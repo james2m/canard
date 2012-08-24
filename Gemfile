@@ -3,11 +3,6 @@ source "http://rubygems.org"
 # Specify your gem's dependencies in canard.gemspec
 gemspec
 
-group :development do
-  gem 'ruby-debug', :platform => :ruby_18
-  gem 'debugger', :platform => :ruby_19
-end
-
 group :test do
   gem 'rake'
 end
