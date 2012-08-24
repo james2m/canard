@@ -21,6 +21,14 @@ Gem::Specification.new do |s|
 
   s.add_development_dependency "minitest", "~> 2"
   s.add_development_dependency "rails", "~> 3.2.3"
+  
+  if RUBY_VERSION < '1.9'
+    s.add_development_dependency "mongoid", "~> 2.0"
+  else
+    s.add_development_dependency "mongoid", "~> 3.0"
+  end
+  s.add_development_dependency "bson_ext", "~> 1.6.4"
+  
   s.add_runtime_dependency "cancan"
   s.add_runtime_dependency "role_model"
 end
