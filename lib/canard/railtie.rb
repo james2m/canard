@@ -10,6 +10,9 @@ module Canard
       app.config.eager_load_paths = app.config.eager_load_paths.reject do |path|
         Canard.load_paths.include?(path)
       end
+      if app.config.respond_to?(:watchable_dirs)
+        app.config.watchable_dirs.merge! Hash[ Canard.load_paths.product([[:rb]]) ]
+      end
     end
 
     initializer "canard.active_record" do |app|
@@ -20,7 +23,7 @@ module Canard
         Canard.find_abilities
       end
     end
-    
+
     initializer "canard.mongoid" do |app|
       if defined?(Mongoid)
         require 'canard/adapters/mongoid'
