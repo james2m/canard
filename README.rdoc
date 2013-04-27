@@ -5,7 +5,7 @@ definitions gain their own folder and a little structure. The easiest way to get
 Canard generator. Canard progressively enhances the abilities of the model by applying role abilities on
 top of the models base abilities.
 
-A User model with :admin and :manger roles would be defined:
+A User model with :admin and :manager roles would be defined:
 
     class User < ActiveRecord::Base
 
@@ -128,6 +128,11 @@ User.with_all_roles(roles)::  return only the users with all the specified roles
 Add the canard gem to your Gemfile. In Gemfile:
 
     gem "canard"
+
+Add the `roles_mask` field to your user table:
+
+    rails g migration add_roles_mask_to_users roles_mask:integer
+    rake db:migrate
 
 That's it!
 
