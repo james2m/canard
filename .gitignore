@@ -3,6 +3,8 @@
 .bundle
 pkg/*
 .rvmrc
+.ruby-version
+.ruby-gemset
 Gemfile.lock
 *.sqlite3
 *.log
