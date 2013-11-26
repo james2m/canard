@@ -4,7 +4,7 @@ require 'rails'
 module Canard
   class Railtie < Rails::Railtie
 
-    initializer "carard.no_eager_loading", :before => 'before_eager_loading' do |app|
+    initializer "canard.no_eager_loading", :before => 'before_eager_loading' do |app|
       ActiveSupport::Dependencies.autoload_paths.reject!{ |path| Canard.load_paths.include?(path) }
       # Don't eagerload our configs, we'll deal with them ourselves
       app.config.eager_load_paths = app.config.eager_load_paths.reject do |path|
