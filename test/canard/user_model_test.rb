@@ -12,7 +12,7 @@ describe Canard::UserModel do
 
       it 'adds role_model to the class' do
         PlainRubyUser.included_modules.must_include RoleModel
-        PlainRubyUser.must_respond_to :roles
+        PlainRubyUser.new.must_respond_to :roles
       end
     end
 
