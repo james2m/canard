@@ -7,3 +7,4 @@
 * Add install generator to allow overriding of the default tests.
 * Make the Ability user referece configureable in Ability.
 * Add DataMapper support.
+* Detect and use FactoryGirl syntax in generated spec.
