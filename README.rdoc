@@ -123,7 +123,7 @@ User.with_all_roles(roles)::  return only the users with all the specified roles
 
 == Installation
 
-=== Rails 3.x
+=== Rails 3.x & 4.x
 
 Add the canard gem to your Gemfile. In Gemfile:
 
