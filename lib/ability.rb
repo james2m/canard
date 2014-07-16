@@ -53,7 +53,7 @@ class Ability
 
   end
 
-  private
+  protected
 
   def append_abilities(key)
     ability_definitions = Canard.ability_definitions
