@@ -66,4 +66,8 @@ class Ability
     class_name.downcase!.to_sym
   end
 
+  def includes_abilities_of(*other_roles)
+    other_roles.each { |other_role| append_abilities(other_role) }
+  end
+
 end
