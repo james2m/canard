@@ -5,7 +5,7 @@ describe Canard do
   describe "find_abilities" do
 
     before do
-      Canard::Abilities.default_path = File.expand_path('../../dummy/app/abilities', __FILE__)
+      Canard::Abilities.definition_paths = [File.expand_path('../../dummy/app/abilities', __FILE__)]
     end
 
     it "loads the abilities into ability_definitions" do
