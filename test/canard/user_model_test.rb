@@ -42,7 +42,7 @@ describe Canard::UserModel do
     end
 
     describe "with no roles_mask" do
-      
+
       before do
         PlainRubyNonUser.acts_as_user :roles => [:viewer, :author, :admin]
       end
@@ -51,9 +51,9 @@ describe Canard::UserModel do
         PlainRubyNonUser.valid_roles.must_equal []
       end
     end
-    
+
     describe "setting the role_mask" do
-      
+
       before do
         PlainRubyNonUser.send :attr_accessor, :my_roles
         PlainRubyNonUser.acts_as_user :roles => [:viewer, :author], :roles_mask => :my_roles
@@ -117,7 +117,7 @@ describe Canard::UserModel::InstanceMethods do
       subject.can?(:show, Post).must_equal true
       subject.can?(:index, Post).must_equal true
     end
-      
+
     it "has no other abilities" do
       subject.cannot?(:destroy, Post).must_equal true
     end
