@@ -87,6 +87,31 @@ And it's associated test spec/abilities/users_spec.rb;
 
     end
 
+You can also re-use abilities defined for one role in another. This allows you to 'inherit' abilities without having to assign all of the roles to the user. To do this, pass a list of role names to the includes_abilities_of method
+
+    Canard::Abilities.for(:writer) do
+
+      can     [:create], Post
+      can     [:read], Post, user_id: user.id
+
+    end
+
+    Canard::Abilities.for(:reviewer) do
+
+      can     [:read, :update], Post
+
+    end
+
+    Canard::Abilities.for(:admin) do
+
+      includes_abilities_of :writer, :reviewer
+
+      can     [:delete], Post
+
+    end
+
+A user assigned the :admin role will have all of the abilities of the :writer and :reviewer, along with their own abilities without having to have those individual roles assigned to them.
+
 Now lets generate some abilities for the manager and admin.
 
     $ rails g canard:ability admin can:manage:[account,statement]

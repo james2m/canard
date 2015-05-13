@@ -7,9 +7,9 @@ describe Canard::Adapters::ActiveRecord do
     describe 'with a role_mask' do
 
       describe 'and :roles => [] specified' do
-        
+
         it 'sets the valid_roles for the class' do
-          User.valid_roles.must_equal [:viewer, :author, :admin]
+          User.valid_roles.must_equal [:viewer, :author, :admin, :editor]
         end
 
       end
@@ -35,23 +35,23 @@ describe Canard::Adapters::ActiveRecord do
     end
 
     describe "with no table" do
-        
+
       subject { Class.new(ActiveRecord::Base) }
 
       it "sets no roles" do
         subject.class_eval { acts_as_user :roles => [:admin] }
         subject.valid_roles.must_equal []
       end
-        
+
       it "does not raise any errors" do
         proc { subject.class_eval { acts_as_user :roles => [:admin] } }.must_be_silent
       end
-        
+
       it "returns nil" do
         subject.class_eval { acts_as_user :roles => [:admin] }.must_be_nil
       end
     end
-    
+
     describe 'with an alternative roles_mask specified' do
 
       before do

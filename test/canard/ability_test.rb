@@ -93,6 +93,29 @@ describe Ability do
 
     end
 
+    describe "a user with editor role" do
+      let(:user) { User.create(:roles => [:editor]) }
+      let(:member) { Member.create(:user => user) }
+      let(:other_user) { User.create }
+      let(:other_member) { Member.new(:user => other_user) }
+      subject { Ability.new(user) }
+
+      it "has all the abilities of the base class" do
+        subject.can?(:edit, member).must_equal true
+        subject.can?(:update, member).must_equal true
+
+        subject.cannot?(:edit, other_member).must_equal true
+        subject.cannot?(:update, other_member).must_equal true
+      end
+
+      it "has most of the abilities of authors, except it can't create Posts" do
+        subject.can?(:update, Post).must_equal true
+        subject.can?(:read, Post).must_equal true
+        subject.cannot?(:create, Post).must_equal true
+      end
+
+    end
+
     describe "with no user" do
 
       subject { Ability.new }
