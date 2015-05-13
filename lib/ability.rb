@@ -26,8 +26,11 @@
 class Ability
 
   include CanCan::Ability
+  extend Forwardable
 
   attr_reader :user
+
+  def_delegators :Canard, :ability_definitions, :ability_key
 
   def initialize(object=nil)
 
@@ -38,7 +41,7 @@ class Ability
     if @user
       # Add the base user abilities.
       user_class_name = String(@user.class.name)
-      append_abilities ability_key(user_class_name) unless user_class_name.empty?
+      append_abilities user_class_name unless user_class_name.empty?
     else
       # If user not set then lets create a guest
       @user = Object.new
@@ -55,15 +58,9 @@ class Ability
 
   protected
 
-  def append_abilities(key)
-    ability_definitions = Canard.ability_definitions
+  def append_abilities(dirty_key)
+    key = ability_key(dirty_key)
     instance_eval(&ability_definitions[key]) if ability_definitions.has_key?(key)
-  end
-
-  def ability_key(class_name)
-    class_name.gsub!('::', '')
-    class_name.gsub!(/(.)([A-Z])/,'\1_\2')
-    class_name.downcase!.to_sym
   end
 
   def includes_abilities_of(*other_roles)

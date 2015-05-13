@@ -3,7 +3,7 @@ require 'test_helper'
 describe Ability do
 
   before do
-    Canard::Abilities.default_path = File.expand_path('../../dummy/app/abilities', __FILE__)
+    Canard::Abilities.definition_paths = [File.expand_path('../../dummy/app/abilities', __FILE__)]
     # reload abilities because the reloader will have removed them after the railtie ran
     Canard.find_abilities
   end
@@ -170,23 +170,6 @@ describe Ability do
         end
       end
 
-    end
-  end
-
-  describe "ability_key" do
-
-    it "returns a snake case version of the string" do
-      class_name = 'CamelCaseString'
-      key = :camel_case_string
-
-      Ability.new.send(:ability_key, class_name).must_equal key
-    end
-
-    it "prepends namespaces to the class name" do
-      class_name = 'Namespace::CamelCaseString'
-      key = :namespace_camel_case_string
-
-      Ability.new.send(:ability_key, class_name).must_equal key
     end
   end
 end

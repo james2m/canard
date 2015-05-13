@@ -15,4 +15,20 @@ describe Canard do
 
   end
 
+  describe "ability_key" do
+
+    it "returns a snake case version of the string" do
+      class_name = 'CamelCaseString'
+      key = :camel_case_string
+
+      Canard.ability_key(class_name).must_equal key
+    end
+
+    it "prepends namespaces to the class name" do
+      class_name = 'Namespace::CamelCaseString'
+      key = :namespace_camel_case_string
+
+      Canard.ability_key(class_name).must_equal key
+    end
+  end
 end

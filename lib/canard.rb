@@ -1,3 +1,4 @@
+require 'forwardable'
 require 'cancan'
 require 'role_model'
 require 'canard/abilities'
