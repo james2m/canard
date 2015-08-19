@@ -5,12 +5,11 @@ module Canard
       private
 
       def add_role_scopes(*args)
-        options = args.extract_options!
-        prefix = "#{options[:prefix]}_" || ''
+        options = args.extract_options!        
         # TODO change to check has_roles_attribute?
         if active_record_table?
           valid_roles.each do |role|
-            define_scopes_for_role role, prefix
+            define_scopes_for_role role, options[:prefix]
           end
 
           # TODO change hard coded :role_mask to roles_attribute_name
@@ -37,7 +36,8 @@ module Canard
         active_record_table? && column_names.include?(roles_attribute_name.to_s) || super
       end
 
-      def define_scopes_for_role(role, prefix)
+      def define_scopes_for_role(role, prefix=nil)
+        prefix = prefix? "#{prefix}_" : ''
         include_scope   = "#{prefix}role.to_s.pluralize"
         exclude_scope   = "non_#{include_scope}"
 
