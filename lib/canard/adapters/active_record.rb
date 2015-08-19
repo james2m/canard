@@ -37,7 +37,7 @@ module Canard
       end
 
       def define_scopes_for_role(role, prefix=nil)
-        prefix = prefix? "#{prefix}_" : ''
+        prefix = prefix ? "#{prefix}_" : ''
         include_scope   = "#{prefix}role.to_s.pluralize"
         exclude_scope   = "non_#{include_scope}"
 
