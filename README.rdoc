@@ -9,7 +9,7 @@ A User model with :admin and :manager roles would be defined:
 
     class User < ActiveRecord::Base
 
-      acts_as_user :roles =>  :manager, :admin
+      acts_as_user :roles => [ :manager, :admin ]
 
     end
 
