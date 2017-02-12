@@ -1,7 +1,7 @@
 require 'rails_helper'
 require 'cancan/matchers'
 
-describe Canard::Abilities, 'for <%= plural_name %>' do
+describe Canard::Abilities, '#<%= plural_name %>' do
 <% if Rails.configuration.generators.options[:rails][:fixture_replacement] == :factory_girl -%>
   let(:<%= name %>) { FactoryGirl.create(:<%= name %>) }
 <% elsif Rails.configuration.generators.options[:rails][:fixture_replacement] == :machinist -%>
