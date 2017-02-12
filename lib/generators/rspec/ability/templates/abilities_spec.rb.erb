@@ -3,7 +3,7 @@ require 'cancan/matchers'
 
 describe Canard::Abilities, '#<%= plural_name %>' do
 <% if Rails.configuration.generators.options[:rails][:fixture_replacement] == :factory_girl -%>
-  let(:<%= name %>) { FactoryGirl.create(:user, :<%= name %>) }
+  let(:<%= name %>) { FactoryGirl.create(:user<%= name == 'user' ? '' : ", :#{name}" %>) }
 <% elsif Rails.configuration.generators.options[:rails][:fixture_replacement] == :machinist -%>
   let(:<%= name %>) { User.make!(:<%= name %>) }
 <% else -%>
