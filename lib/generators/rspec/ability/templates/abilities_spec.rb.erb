@@ -29,11 +29,19 @@ describe Canard::Abilities, '#<%= plural_name %>' do
 <% definitions do |model, definition| -%>
   <% model_name = model.camelize -%>
 describe 'on <%= model_name -%>' do
+<% if Rails.configuration.generators.options[:rails][:fixture_replacement] == :factory_girl -%>
+    let(:<%= model -%>) { FactoryGirl.create(:<%= model -%>) }
+<% elsif Rails.configuration.generators.options[:rails][:fixture_replacement] == :machinist -%>
+    let(:<%= model -%>) { <%= model_name -%>.make! }
+<% else -%>
+    let(:<%= model -%>) { <%= model_name -%>.create }
+<% end -%>
+
 <% definition.cans.each do |can| -%>
-    it { is_expected.to be_able_to(<%= ":#{can}, #{name}" -%>) }
+    it { is_expected.to be_able_to(<%= ":#{can}, #{model}" -%>) }
 <% end -%>
 <%- definition.cannots.each do |cannot| -%>
-    it { is_expected.to_not be_able_to(<%= ":#{cannot}, #{name}" -%>) }
+    it { is_expected.to_not be_able_to(<%= ":#{cannot}, #{model}" -%>) }
 <% end -%>
   end
   # on <%= model_name %>
