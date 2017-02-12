@@ -1,5 +1,4 @@
 Canard::Abilities.for(<%= ":#{name}" -%>) do
-
 <% if ability_definitions.empty? -%>
   # Define abilities for the user role here. For example:
   #
@@ -19,14 +18,13 @@ Canard::Abilities.for(<%= ":#{name}" -%>) do
   # The third argument is an optional hash of conditions to further filter the objects.
   # For example, here the user can only update published articles.
   #
-  #   can :update, Article, :published => true
+  #   can :update, Article, published: true
   #
-  # See the wiki for details: https://github.com/ryanb/cancan/wiki/Defining-Abilities
+  # See the wiki for details: https://github.com/CanCanCommunity/cancancan/wiki/Defining-Abilities
 <% else -%>
 <% definitions do |model, definition| -%>
-  <%= "can".ljust(8, ' ') + "#{definition.cans.map(&:to_sym)}, #{model.classify}" unless definition.cans.empty? %>
-  <%= "cannot".ljust(8, ' ') + "#{definition.cannots.map(&:to_sym)}, #{model.classify}" unless definition.cannots.empty? %>
+  <%= "can #{definition.cans.map(&:to_sym)}, #{model.classify}" unless definition.cans.empty? %>
+  <%= "cannot #{definition.cannots.map(&:to_sym)}, #{model.classify}" unless definition.cannots.empty? %>
 <% end -%>
 <% end -%>
-
 end

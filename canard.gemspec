@@ -9,8 +9,8 @@ Gem::Specification.new do |s|
   s.authors     = ["James McCarthy"]
   s.email       = ["james2mccarthy@gmail.com"]
   s.homepage    = "https://github.com/james2m/canard"
-  s.summary     = %q{Adds role based authorisation to Rails by combining RoleModel and CanCan.}
-  s.description = %q{Wraps CanCan and RoleModel up to make role based authorisation really easy in Rails 3.x.}
+  s.summary     = %q{Adds role based authorisation to Rails by combining RoleModel and CanCanCan.}
+  s.description = %q{Wraps CanCanCan and RoleModel up to make role based authorisation really easy in Rails 4+.}
 
   s.rubyforge_project = "canard"
 
@@ -28,7 +28,7 @@ Gem::Specification.new do |s|
     s.add_development_dependency "mongoid", "~> 3.0"
   end
 
-  s.requirements << 'cancan for Rails3 and earlier or the Rails4 compatible cancancan fork.'
+  s.requirements << "cancan's community supported Rails4+ compatible cancancan fork."
   s.add_runtime_dependency "cancancan"
   s.add_runtime_dependency "role_model"
 end
