@@ -3,18 +3,19 @@ require 'cancan/matchers'
 
 describe Canard::Abilities, '#<%= plural_name %>' do
 <% if Rails.configuration.generators.options[:rails][:fixture_replacement] == :factory_girl -%>
-  let(:<%= name %>) { FactoryGirl.create(:user<%= name == 'user' ? '' : ", :#{name}" %>) }
+  let(:acting_<%= name %>) { FactoryGirl.create(:user<%= name == 'user' ? '' : ", :#{name}" %>) }
 <% elsif Rails.configuration.generators.options[:rails][:fixture_replacement] == :machinist -%>
-  let(:<%= name %>) { User.make!(:<%= name %>) }
+  let(:acting_<%= name %>) { User.make!(:<%= name %>) }
 <% else -%>
-  let(:<%= name %>) { User.create(roles: %w(<%= name -%>)) }
+  let(:acting_<%= name %>) { User.create(roles: %w(<%= name -%>)) }
 <% end -%>
-
-  subject(:<%= name %>_ability) { Ability.new(<%= name %>) }
+  subject(:<%= name %>_ability) { Ability.new(acting_<%= name %>) }
 
 <% if ability_definitions.empty? -%>
 #   # Define your ability tests thus;
 #   describe 'on <%= name.camelize %>' do
+#     let(:<%= name %>) { FactoryGirl.create(<%= name %>) }
+#
 #     it { is_expected.to be_able_to(:index,   <%= name.camelize %>) }
 #     it { is_expected.to be_able_to(:show,    <%= name %>) }
 #     it { is_expected.to be_able_to(:read,    <%= name %>) }
