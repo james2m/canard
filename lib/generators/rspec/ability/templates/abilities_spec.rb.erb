@@ -3,7 +3,7 @@ require 'cancan/matchers'
 
 describe Canard::Abilities, '#<%= plural_name %>' do
 <% if Rails.configuration.generators.options[:rails][:fixture_replacement] == :factory_girl -%>
-  let(:<%= name %>) { FactoryGirl.create(:<%= name %>) }
+  let(:<%= name %>) { FactoryGirl.create(:user, :<%= name %>) }
 <% elsif Rails.configuration.generators.options[:rails][:fixture_replacement] == :machinist -%>
   let(:<%= name %>) { User.make!(:<%= name %>) }
 <% else -%>
@@ -30,10 +30,10 @@ describe Canard::Abilities, '#<%= plural_name %>' do
   <% model_name = model.camelize -%>
 describe 'on <%= model_name -%>' do
 <% definition.cans.each do |can| -%>
-    it { is_expected.to be_able_to(<%= ":#{can}, #{model}" -%>) }
+    it { is_expected.to be_able_to(<%= ":#{can}, #{name}" -%>) }
 <% end -%>
 <%- definition.cannots.each do |cannot| -%>
-    it { is_expected.to_not be_able_to(<%= ":#{cannot}, #{model}" -%>) }
+    it { is_expected.to_not be_able_to(<%= ":#{cannot}, #{name}" -%>) }
 <% end -%>
   end
   # on <%= model_name %>
