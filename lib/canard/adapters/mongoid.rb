@@ -4,9 +4,10 @@ module Canard
 
       private
 
-      def add_role_scopes
+      def add_role_scopes(*args)
+        options = args.extract_options!
         valid_roles.each do |role|
-          define_scopes_for_role role
+          define_scopes_for_role role, options[:prefix]
         end
 
         def with_any_role(*roles)
@@ -26,14 +27,13 @@ module Canard
        fields.include?(roles_attribute_name.to_s) || super
       end
 
-      def define_scopes_for_role(role)
-        include_scope   = role.to_s.pluralize
-        exclude_scope   = "non_#{include_scope}"
-        
-        scope include_scope, lambda { where("(this.#{roles_attribute_name} & #{mask_for(role)}) > 0") }
-        scope exclude_scope, lambda { any_of({roles_attribute_name  => { "$exists" => false }}, {roles_attribute_name => nil}, {"$where" => "(this.#{roles_attribute_name} & #{mask_for(role)}) === 0"}) }
-      end
+      def define_scopes_for_role(role, prefix=nil)
+        include_scope = [prefix, String(role).pluralize].compact.join('_')
+        exclude_scope = "non_#{include_scope}"
 
+        scope include_scope, -> { where("(this.#{roles_attribute_name} & #{mask_for(role)}) > 0") }
+        scope exclude_scope, -> { any_of({roles_attribute_name  => { "$exists" => false }}, {roles_attribute_name => nil}, {"$where" => "(this.#{roles_attribute_name} & #{mask_for(role)}) === 0"}) }
+      end
     end
   end
 end
