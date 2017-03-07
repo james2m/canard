@@ -25,17 +25,13 @@ module Canard
     end
 
     initializer "canard.mongoid" do |app|
-      if defined?(Mongoid)
-        require 'canard/adapters/mongoid'
-      end
+      require 'canard/adapters/mongoid' if defined?(Mongoid)
     end
 
     initializer "canard.abilities_reloading", :after => "action_dispatch.configure" do |app|
       reloader = rails5? ? ActiveSupport::Reloader : ActionDispatch::Reloader
       if reloader.respond_to?(:to_prepare)
         reloader.to_prepare { Canard.find_abilities }
-      else
-        reloader.before { Canard.find_abilities }
       end
     end
 
@@ -43,8 +39,10 @@ module Canard
       load File.expand_path('../../tasks/canard.rake', __FILE__)
     end
 
+    private
+
     def rails5?
-      Gem.loaded_specs['activesupport'].version >= Gem::Version.new('5.0.0.beta')
+      ActionPack::VERSION::MAJOR == 5
     end
   end
 end
