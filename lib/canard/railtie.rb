@@ -31,15 +31,20 @@ module Canard
     end
 
     initializer "canard.abilities_reloading", :after => "action_dispatch.configure" do |app|
-      if ActionDispatch::Reloader.respond_to?(:to_prepare)
-        ActionDispatch::Reloader.to_prepare { Canard.find_abilities }
+      reloader = rails5? ? ActiveSupport::Reloader : ActionDispatch::Reloader
+      if reloader.respond_to?(:to_prepare)
+        reloader.to_prepare { Canard.find_abilities }
       else
-        ActionDispatch::Reloader.before { Canard.find_abilities }
+        reloader.before { Canard.find_abilities }
       end
     end
 
     rake_tasks do
       load File.expand_path('../../tasks/canard.rake', __FILE__)
+    end
+
+    def rails5?
+      Gem.loaded_specs['activesupport'].version >= Gem::Version.new('5.0.0.beta')
     end
   end
 end
