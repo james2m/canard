@@ -3,10 +3,10 @@ rvm:
   - 2.0
   - 2.1
   - 2.2
-  - 2.3
-  - 2.4
-  - jruby-19mode # JRuby in 1.9 mode
-  - rbx-19mode
+  - 2.3.3
+  - 2.4.0
+  - jruby-9.1.5
+  - rubinius-3
 services:
   - mongodb
 
