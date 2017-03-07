@@ -31,10 +31,9 @@ module Canard
         include_scope = [prefix, String(role).pluralize].compact.join('_')
         exclude_scope = "non_#{include_scope}"
 
-        scope include_scope, lambda { where("(this.#{roles_attribute_name} & #{mask_for(role)}) > 0") }
-        scope exclude_scope, lambda { any_of({roles_attribute_name  => { "$exists" => false }}, {roles_attribute_name => nil}, {"$where" => "(this.#{roles_attribute_name} & #{mask_for(role)}) === 0"}) }
+        scope include_scope, -> { where("(this.#{roles_attribute_name} & #{mask_for(role)}) > 0") }
+        scope exclude_scope, -> { any_of({roles_attribute_name  => { "$exists" => false }}, {roles_attribute_name => nil}, {"$where" => "(this.#{roles_attribute_name} & #{mask_for(role)}) === 0"}) }
       end
-
     end
   end
 end

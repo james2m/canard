@@ -13,15 +13,15 @@ module Canard
           end
 
           # TODO change hard coded :role_mask to roles_attribute_name
-          define_scope_method(:with_any_role) do |*roles|
+          define_singleton_method(:with_any_role) do |*roles|
             where("#{role_mask_column} & :role_mask > 0", { :role_mask => mask_for(*roles) })
           end
 
-          define_scope_method(:with_all_roles) do |*roles|
+          define_singleton_method(:with_all_roles) do |*roles|
             where("#{role_mask_column} & :role_mask = :role_mask", { :role_mask => mask_for(*roles) })
           end
 
-          define_scope_method(:with_only_roles) do |*roles|
+          define_singleton_method(:with_only_roles) do |*roles|
             where("#{role_mask_column} = :role_mask", { :role_mask => mask_for(*roles) })
           end
         end
@@ -40,25 +40,18 @@ module Canard
         include_scope = [prefix, String(role).pluralize].compact.join('_')
         exclude_scope = "non_#{include_scope}"
 
-        define_scope_method(include_scope) do
+        define_singleton_method(include_scope) do
           where("#{role_mask_column} & :role_mask > 0", { :role_mask => mask_for(role) })
         end
 
-        define_scope_method(exclude_scope) do
+        define_singleton_method(exclude_scope) do
           where("#{role_mask_column} & :role_mask = 0 or #{role_mask_column} is null", { :role_mask => mask_for(role) })
-        end
-      end
-
-      def define_scope_method(method, &block)
-        (class << self; self end).class_eval do
-          define_method(method, block)
         end
       end
 
       def role_mask_column
         "#{quoted_table_name}.#{connection.quote_column_name roles_attribute_name}"
       end
-
     end
   end
 end
