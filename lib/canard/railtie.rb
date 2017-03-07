@@ -25,21 +25,24 @@ module Canard
     end
 
     initializer "canard.mongoid" do |app|
-      if defined?(Mongoid)
-        require 'canard/adapters/mongoid'
-      end
+      require 'canard/adapters/mongoid' if defined?(Mongoid)
     end
 
     initializer "canard.abilities_reloading", :after => "action_dispatch.configure" do |app|
-      if ActionDispatch::Reloader.respond_to?(:to_prepare)
-        ActionDispatch::Reloader.to_prepare { Canard.find_abilities }
-      else
-        ActionDispatch::Reloader.before { Canard.find_abilities }
+      reloader = rails5? ? ActiveSupport::Reloader : ActionDispatch::Reloader
+      if reloader.respond_to?(:to_prepare)
+        reloader.to_prepare { Canard.find_abilities }
       end
     end
 
     rake_tasks do
       load File.expand_path('../../tasks/canard.rake', __FILE__)
+    end
+
+    private
+
+    def rails5?
+      ActionPack::VERSION::MAJOR == 5
     end
   end
 end

@@ -148,7 +148,7 @@ User.with_all_roles(roles)::  return only the users with all the specified roles
 
 == Installation
 
-=== Rails 3.x & 4.x
+=== Rails 3.x, 4.x & 5.x
 
 Add the canard gem to your Gemfile. In Gemfile:
 
@@ -163,8 +163,7 @@ That's it!
 
 === Rails 2.x
 
-Sorry you are out of luck with Rails 2.x Canard has only been written and tested with Rails 3.x. I'll be happy
-to accept pull requests for tested Rails 2.x updates if anybody is game.
+Sorry you are out of luck with Rails 2.x Canard has only been written and tested with Rails 3 and above.
 
 == Supported ORM's
 
