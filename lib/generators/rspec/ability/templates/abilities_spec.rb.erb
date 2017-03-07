@@ -1,68 +1,51 @@
-require_relative '../spec_helper'
+require 'rails_helper'
+require 'cancan/matchers'
 
-require "cancan/matchers"
-
-describe Canard::Abilities, "for <%= plural_name %>" do
-
-  before do
+describe Canard::Abilities, '#<%= plural_name %>' do
 <% if Rails.configuration.generators.options[:rails][:fixture_replacement] == :factory_girl -%>
-    @user = Factory.create(:<%= name %>_user)
+  let(:acting_<%= name %>) { FactoryGirl.create(:user<%= name == 'user' ? '' : ", :#{name}" %>) }
 <% elsif Rails.configuration.generators.options[:rails][:fixture_replacement] == :machinist -%>
-    @user = User.make!(:<%= name %>)
+  let(:acting_<%= name %>) { User.make!(:<%= name %>) }
 <% else -%>
-  @user = User.create(:roles => %w(<%= name -%>))
+  let(:acting_<%= name %>) { User.create(roles: %w(<%= name -%>)) }
 <% end -%>
-  end
-  
-  subject { Ability.new(@user) }
-  
+  subject(:<%= name %>_ability) { Ability.new(acting_<%= name %>) }
+
 <% if ability_definitions.empty? -%>
-# Define your ability tests thus;
+#   # Define your ability tests thus;
+#   describe 'on <%= name.camelize %>' do
+#     let(:<%= name %>) { FactoryGirl.create(<%= name %>) }
 #
-#  describe 'on Activity' do
-#
-#    before do
-#      @activity = Factory.create(:activity)
-#    end
-#
-#    it { should be_able_to( :index,    Activity  ) }
-#    it { should be_able_to( :show,     @activity ) }
-#    it { should be_able_to( :read,     @activity ) }
-#    it { should be_able_to( :new,      @activity ) }
-#    it { should be_able_to( :create,   @activity ) }
-#    it { should be_able_to( :edit,     @activity ) }
-#    it { should be_able_to( :update,   @activity ) }
-#    it { should be_able_to( :destroy,  @activity ) }
-#
-#  end
-#  # on Activity
+#     it { is_expected.to be_able_to(:index,   <%= name.camelize %>) }
+#     it { is_expected.to be_able_to(:show,    <%= name %>) }
+#     it { is_expected.to be_able_to(:read,    <%= name %>) }
+#     it { is_expected.to be_able_to(:new,     <%= name %>) }
+#     it { is_expected.to be_able_to(:create,  <%= name %>) }
+#     it { is_expected.to be_able_to(:edit,    <%= name %>) }
+#     it { is_expected.to be_able_to(:update,  <%= name %>) }
+#     it { is_expected.to be_able_to(:destroy, <%= name %>) }
+#   end
+#   # on <%= name.camelize %>
 <% else -%>
 <% definitions do |model, definition| -%>
   <% model_name = model.camelize -%>
-  
-  describe 'on <%= model_name -%>' do
-
-    before do
+describe 'on <%= model_name -%>' do
 <% if Rails.configuration.generators.options[:rails][:fixture_replacement] == :factory_girl -%>
-      @<%= model -%> = Factory.create(:<%= model -%>)
+    let(:<%= model -%>) { FactoryGirl.create(:<%= model -%>) }
 <% elsif Rails.configuration.generators.options[:rails][:fixture_replacement] == :machinist -%>
-      @<%= model -%> = <%= model_name -%>.make!
+    let(:<%= model -%>) { <%= model_name -%>.make! }
 <% else -%>
-      @<%= model -%> = <%= model_name -%>.create
+    let(:<%= model -%>) { <%= model_name -%>.create }
 <% end -%>
-    end
-    
+
 <% definition.cans.each do |can| -%>
-    it { should be_able_to( <%= ":#{can},".ljust(12, ' ') + "@#{model}" -%> ) }
+    it { is_expected.to be_able_to(<%= ":#{can}, #{model}" -%>) }
 <% end -%>
 <%- definition.cannots.each do |cannot| -%>
-    it { should_not be_able_to( <%= ":#{cannot},".ljust(12, ' ') + "@#{model}" -%> ) }
+    it { is_expected.to_not be_able_to(<%= ":#{cannot}, #{model}" -%>) }
 <% end -%>
-
   end
   # on <%= model_name %>
-  <% end -%>
-  
-<% end -%>  
+<% end -%>
+<% end -%>
 end
-  
