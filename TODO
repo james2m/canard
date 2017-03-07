@@ -8,3 +8,4 @@
 * Make the Ability user referece configureable in Ability.
 * Add DataMapper support.
 * Detect and use FactoryGirl syntax in generated spec.
+* Stop extending ActiveRecord, use composition instead.

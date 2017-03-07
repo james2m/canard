@@ -1,10 +1,11 @@
-= Canard
-== Overview
+Canard
+======
+[![Build Status](https://travis-ci.org/james2m/canard.svg?branch=master)](https://travis-ci.org/james2m/canard)
+
 Canard brings CanCan and RoleModel together to make role based authorization in Rails easy. Your ability
 definitions gain their own folder and a little structure. The easiest way to get started is with the
 Canard generator. Canard progressively enhances the abilities of the model by applying role abilities on
 top of the models base abilities.
-
 A User model with :admin and :manager roles would be defined:
 
     class User < ActiveRecord::Base
@@ -22,7 +23,8 @@ First it will look for a users abilities, then it will look for the roles in the
 
 Therefore each the later abilities only need to build on their predecessors.
 
-== Usage
+Usage
+=====
 To generate some abilities for the User.
 
     $ rails g canard:ability user can:[read,create]:[account,statement] cannot:destroy:account
@@ -131,8 +133,8 @@ Obviously the generators are just a starting point and should  be used only to g
 suggest that every new model you create you add to the abilities as the specs are easy to write and CanCan
 definitions are very clear and simple.
 
-== Scopes
-
+Scopes
+======
 The :acts_as_user method with automatically define some named scopes for each role. For the example User model
 above it will define the following scopes;
 
@@ -146,10 +148,11 @@ In addition to the role specific scopes it also adds some general scopes;
 User.with_any_role(roles)::   return all the users with any of the specified roles
 User.with_all_roles(roles)::  return only the users with all the specified roles
 
-== Installation
+Installation
+============
 
-=== Rails 3.x, 4.x & 5.x
-
+Rails 3.x, 4.x & 5.x
+--------------------
 Add the canard gem to your Gemfile. In Gemfile:
 
     gem "canard"
@@ -161,16 +164,19 @@ Add the `roles_mask` field to your user table:
 
 That's it!
 
-=== Rails 2.x
+Rails 2.x
+---------
 
 Sorry you are out of luck with Rails 2.x Canard has only been written and tested with Rails 3 and above.
 
-== Supported ORM's
+Supported ORM's
+---------------
 
 Canard is ORM agnostic. ActiveRecord and Mongoid (thanks David Butler) adapters are currently implemented.
 New adapters can easily be added, but you'd need to check CanCan can also support your adapter.
 
-== Further reading
+Further reading
+---------------
 
 Canard stands on the sholders of Ryan Bates' CanCan and Martin Rehfeld's RoleModel. You can read more
 about defining abilities on the CanCan wiki (https://github.com/ryanb/cancan/wiki). Canard implements
@@ -205,7 +211,8 @@ Under the covers Canard uses RoleModel (https://github.com/martinrehfeld/role_mo
 is based on Ryan Bates' suggested approach to role based authorization which is documented in the CanCan
 wiki (https://github.com/ryanb/cancan/wiki/role-based-authorization).
 
-== Note on Patches/Pull Request
+Note on Patches/Pull Request
+----------------------------
 
 * Fork the project.
 * Make your feature addition or bug fix.
@@ -214,21 +221,33 @@ wiki (https://github.com/ryanb/cancan/wiki/role-based-authorization).
   bump version in a commit by itself I can ignore it when I pull)
 * Send me a pull request.  Bonus points for topic branches.
 
-== Contributors
+Contributors
+------------
 
     git log | grep Author | sort | uniq
 
-* James McCarthy
-* Joey Geiger
-* Morton Jonuschat
+* Alessandro Dal Grande
 * David Butler
+* Dmitriy Molodtsov
+* Dmytro Salko
+* James McCarthy
+* Jesse McGinnis
+* Joey Geiger
+* Jon Kinney
+* Justin Buchanan
+* Morton Jonuschat
+* Piotr Kuczynski
+* Thomas Hoen
+* Travis Berry
 
 If you feel like contributing there is a TODO list in the root with a few ideas and opportunities!
 
-== Credits
+Credits
+-------
 
 Thanks to Ryan Bates for creating the awesome CanCan (http://wiki.github.com/ryanb/cancan)
 and Martin Rehfeld for implementing Role Based Authorization in the form of RoleModel (http://github.com/martinrehfeld/role_model).
 
-== Copyright
-Copyright (c) 2011 James McCarthy, released under the MIT license
+Copyright
+---------
+Copyright (c) 2011-2017 James McCarthy, released under the MIT license
