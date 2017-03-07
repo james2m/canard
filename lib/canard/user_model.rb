@@ -73,7 +73,7 @@ module Canard
 
       roles options[:roles] if options.has_key?(:roles) && has_roles_mask_accessors?
 
-      add_role_scopes if respond_to?(:add_role_scopes, true)
+      add_role_scopes(prefix: options[:prefix]) if respond_to?(:add_role_scopes, true)
     end
 
     private
