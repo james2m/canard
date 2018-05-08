@@ -28,7 +28,7 @@ module Canard
       end
 
       def active_record_table?
-        respond_to?(:table_exists?) && table_exists?
+        database_exists? && respond_to?(:table_exists?) && table_exists?
       end
 
       # TODO extract has_roles_attribute? and change to has_roles_attribute? || super
@@ -51,6 +51,13 @@ module Canard
 
       def role_mask_column
         "#{quoted_table_name}.#{connection.quote_column_name roles_attribute_name}"
+      end
+
+      def database_exists?
+        ActiveRecord::Base.connection
+        true
+      rescue ActiveRecord::NoDatabaseError, PG::ConnectionBad
+        false
       end
     end
   end
