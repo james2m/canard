@@ -59,10 +59,10 @@ module Canard
     def acts_as_user(*args)
       include RoleModel
       include InstanceMethods
-      
+
       options = args.last.is_a?(Hash) ? args.pop : {}
-      
-      if defined?(ActiveRecord) && self < ActiveRecord::Base
+
+      if defined?(ActiveRecord::Base) && self < ActiveRecord::Base
         extend Adapters::ActiveRecord
       elsif defined?(Mongoid) && self.included_modules.include?(Mongoid::Document)
         extend Adapters::Mongoid
@@ -82,7 +82,7 @@ module Canard
     # don't show up in instance_methods.
     def has_roles_mask_accessors?
       instance_method_names = instance_methods.map { |method_name| method_name.to_s }
-      [roles_attribute_name.to_s, "#{roles_attribute_name}="].all? do |accessor| 
+      [roles_attribute_name.to_s, "#{roles_attribute_name}="].all? do |accessor|
         instance_method_names.include?(accessor)
       end
     end

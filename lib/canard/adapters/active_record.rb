@@ -52,11 +52,10 @@ module Canard
       def role_mask_column
         "#{quoted_table_name}.#{connection.quote_column_name roles_attribute_name}"
       end
-
       def database_exists?
         ActiveRecord::Base.connection
         true
-      rescue ActiveRecord::NoDatabaseError, PG::ConnectionBad
+      rescue
         false
       end
     end
