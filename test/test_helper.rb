@@ -1,5 +1,4 @@
 require 'rubygems'
-gem 'minitest'
 require 'minitest/autorun'
 require 'active_record'
 require 'mongoid'
@@ -12,7 +11,7 @@ database_yml = File.expand_path('config/database.yml', rails_root)
 ActiveRecord::Base.configurations = YAML.load_file(database_yml)
 
 config = ActiveRecord::Base.configurations[environment]
-db     = File.expand_path(config['database'], rails_root)
+db = File.expand_path(config['database'], rails_root)
 
 # Drop the test database and migrate up
 FileUtils.rm(db) if File.exist?(db)
@@ -22,12 +21,7 @@ ActiveRecord::Migration.verbose = false
 ActiveRecord::Migrator.up File.expand_path('db/migrate', rails_root)
 
 # Load mongoid config
-if Mongoid::VERSION < '3'
-  ENV["MONGOID_ENV"] = "test"
-  Mongoid.load!(File.expand_path('config/mongoid2.yml', rails_root))
-else
-  Mongoid.load!(File.expand_path('config/mongoid3.yml', rails_root), :test)
-end
+Mongoid.load!(File.expand_path('config/mongoid3.yml', rails_root), :test)
 Mongoid.logger.level = :info
 
 # Load dummy rails app
