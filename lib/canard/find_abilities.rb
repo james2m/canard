@@ -5,11 +5,11 @@ module Canard
   end
 
   def self.ability_key(class_name)
-    klass_name = String(class_name)
-    klass_name.gsub!('::', '')
-    klass_name.gsub!(/(.)([A-Z])/,'\1_\2')
-    klass_name.downcase!
-    klass_name.to_sym
+    String(class_name)
+      .gsub('::', '')
+      .gsub(/(.)([A-Z])/,'\1_\2')
+      .downcase
+      .to_sym
   end
 
   def self.load_paths
