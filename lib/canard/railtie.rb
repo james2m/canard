@@ -1,6 +1,3 @@
-require 'canard'
-require 'rails'
-
 module Canard
   class Railtie < Rails::Railtie
 
