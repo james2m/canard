@@ -20,7 +20,7 @@ Gem::Specification.new do |s|
   s.require_paths = ['lib']
 
   s.add_development_dependency 'minitest', '~> 2'
-  s.add_development_dependency 'rails', '~> 3.2.3', '>= 3.2.3'
+  s.add_development_dependency 'rails', '~> 3.2', '>= 3.2'
   s.add_development_dependency 'mongoid', '~> 3.0'
 
   s.requirements << "cancan's community supported Rails4+ compatible cancancan fork."
