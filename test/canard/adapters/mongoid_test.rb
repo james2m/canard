@@ -1,17 +1,6 @@
 require 'test_helper'
 require 'bson'
 
-# Make this test compatible with ruby 1.8.7
-begin
-  BSON::ObjectId.new <=> BSON::ObjectId.new
-rescue NoMethodError
-  class BSON::ObjectId
-    def <=>(other)
-      self.to_s <=> other.to_s
-    end
-  end
-end
-
 describe Canard::Adapters::Mongoid do
 
   describe 'acts_as_user' do
@@ -19,7 +8,7 @@ describe Canard::Adapters::Mongoid do
     describe 'with a role_mask' do
 
       describe 'and :roles => [] specified' do
-        
+
         it 'sets the valid_roles for the class' do
           MongoidUser.valid_roles.must_equal [:viewer, :author, :admin]
         end
