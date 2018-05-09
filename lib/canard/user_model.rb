@@ -62,7 +62,7 @@ module Canard
 
       options = args.last.is_a?(Hash) ? args.pop : {}
 
-      if defined?(ActiveRecord::Base) && self < ActiveRecord::Base
+      if defined?(ActiveRecord) && self < ActiveRecord::Base
         extend Adapters::ActiveRecord
       elsif defined?(Mongoid) && self.included_modules.include?(Mongoid::Document)
         extend Adapters::Mongoid
