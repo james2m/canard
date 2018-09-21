@@ -29,6 +29,8 @@ module Canard
 
       def active_record_table?
         respond_to?(:table_exists?) && table_exists?
+      rescue ::ActiveRecord::NoDatabaseError
+        # Hopefully we can fix this at a different level. https://github.com/rails/rails/issues/32870
       end
 
       # TODO extract has_roles_attribute? and change to has_roles_attribute? || super
