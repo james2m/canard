@@ -1,5 +1,4 @@
 module Canard
-
   def self.ability_definitions
     Abilities.definitions
   end
@@ -22,7 +21,5 @@ module Canard
         load file
       end
     end
-
   end
-
 end
