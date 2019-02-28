@@ -13,7 +13,7 @@ group :development, :test do
   gem 'bson', "~> 1.6.4"
 
   platform :ruby, :mswin, :mingw do
-    gem "sqlite3"
+    gem "sqlite3", "~> 1.3.5"
     gem "bson_ext", "~> 1.6.4"
   end
 
