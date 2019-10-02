@@ -25,6 +25,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rails', '~> 3.2', '>= 3.2'
 
   s.requirements << "cancan's community supported Rails4+ compatible cancancan fork."
-  s.add_runtime_dependency 'cancancan', '>= 2', '< 3.0'
+  s.add_runtime_dependency 'cancancan', '>= 1', '< 3.0'
   s.add_runtime_dependency 'role_model', '~> 0'
 end
