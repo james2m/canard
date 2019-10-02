@@ -1,5 +1,5 @@
+# frozen_string_literal: true
+
 Canard::Abilities.for(:author) do
-    
-  can [:create, :update, :read], Post
-    
+  can %i[create update read], Post
 end

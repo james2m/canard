@@ -11,3 +11,7 @@ test:
       database: canard_test
       hosts:
         - localhost:27017
+      options:
+        connect_timeout: 0.01
+        wait_queue_timeout: 0.01
+        socket_timeout: 0.01
