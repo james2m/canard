@@ -16,7 +16,7 @@ group :development, :test do
 
   platform :ruby, :mswin, :mingw do
     gem 'bson_ext', '~> 1.6.4'
-    gem 'sqlite3'
+    gem 'sqlite3', '~> 1.3.5'
   end
 
   platform :jruby do
