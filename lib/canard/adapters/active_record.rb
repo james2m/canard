@@ -30,7 +30,7 @@ module Canard
 
       def active_record_table_exists?
         respond_to?(:table_exists?) && table_exists?
-      rescue ActiveRecord::NoDatabaseError, StandardError
+      rescue ::ActiveRecord::NoDatabaseError, StandardError
         false
       end
 
