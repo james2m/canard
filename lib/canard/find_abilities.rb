@@ -1,4 +1,6 @@
-module Canard
+# frozen_string_literal: true
+
+module Canard # :nodoc:
   def self.ability_definitions
     Abilities.definitions
   end
@@ -6,7 +8,7 @@ module Canard
   def self.ability_key(class_name)
     String(class_name)
       .gsub('::', '')
-      .gsub(/(.)([A-Z])/,'\1_\2')
+      .gsub(/(.)([A-Z])/, '\1_\2')
       .downcase
       .to_sym
   end

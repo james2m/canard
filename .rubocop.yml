@@ -1,0 +1,27 @@
+inherit_from: .rubocop_todo.yml
+
+Style/StringLiterals:
+  Enabled: true
+  EnforcedStyle: single_quotes
+Style/MutableConstant:
+  Exclude:
+    - 'lib/seedbank/version.rb'
+Lint/ScriptPermission:
+  Exclude:
+    - 'test/dummy/Rakefile'
+Metrics/LineLength:
+  Exclude:
+    - 'test/**/*'
+  Max: 132
+Metrics/BlockLength:
+  Exclude:
+    - 'test/**/*'
+Naming/PredicateName:
+  NameWhitelist:
+    - 'has_roles_mask_accessors?'
+Style/Documentation:
+  Exclude:
+    - 'spec/**/*'
+    - 'test/**/*'
+    - 'lib/generators/rspec/ability/ability_generator.rb'
+

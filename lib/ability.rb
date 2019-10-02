@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Canard provides a CanCan Ability class for you. The Canard Ability class
 # looks for and applies abilities for the object passed when a new Ability
 # instance is initialized.
@@ -24,7 +26,6 @@
 # created and Canard will look for a guests.rb amongst the ability definitions
 # and give the guest those abilities.
 class Ability
-
   include CanCan::Ability
   extend Forwardable
 
@@ -32,12 +33,18 @@ class Ability
 
   def_delegators :Canard, :ability_definitions, :ability_key
 
-  def initialize(object=nil)
-
+  def initialize(object = nil)
     # If object has a user attribute set the user from it otherwise assume
     # this is the user.
     @user = object.respond_to?(:user) ? object.user : object
 
+    add_base_ablilties
+    add_roles_abilities if @user.respond_to?(:roles)
+  end
+
+  protected
+
+  def add_base_abilities
     if @user
       # Add the base user abilities.
       user_class_name = String(@user.class.name)
@@ -47,24 +54,18 @@ class Ability
       @user = Object.new
       append_abilities :guest
     end
-
-    # If user has roles get those abilities
-    if @user.respond_to?(:roles)
-      # Add roles on top of the base user abilities
-      @user.roles.each { |role| append_abilities(role) }
-    end
-
   end
 
-  protected
+  def add_roles_abilities
+    @user.roles.each { |role| append_abilities(role) }
+  end
 
   def append_abilities(dirty_key)
     key = ability_key(dirty_key)
-    instance_eval(&ability_definitions[key]) if ability_definitions.has_key?(key)
+    instance_eval(&ability_definitions[key]) if ability_definitions.key?(key)
   end
 
   def includes_abilities_of(*other_roles)
     other_roles.each { |other_role| append_abilities(other_role) }
   end
-
 end

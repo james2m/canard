@@ -1,4 +1,6 @@
-source "http://rubygems.org"
+# frozen_string_literal: true
+
+source 'http://rubygems.org'
 
 # Specify your gem's dependencies in canard.gemspec
 gemspec
@@ -9,16 +11,15 @@ end
 
 # for CRuby, Rubinius, including Windows and RubyInstaller
 group :development, :test do
-
-  gem 'bson', "~> 1.6.4"
+  gem 'bson', '~> 1.6.4'
+  gem 'rubocop'
 
   platform :ruby, :mswin, :mingw do
-    gem "sqlite3"
-    gem "bson_ext", "~> 1.6.4"
+    gem 'bson_ext', '~> 1.6.4'
+    gem 'sqlite3'
   end
 
   platform :jruby do
     gem 'activerecord-jdbcsqlite3-adapter'
   end
 end
-

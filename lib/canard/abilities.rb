@@ -1,11 +1,11 @@
-module Canard
-  class Abilities
+# frozen_string_literal: true
 
-    @definitions      = {}
-    @default_path     = 'app/abilities'
+module Canard
+  class Abilities # :nodoc:
+    @definitions  = {}
+    @default_path = 'app/abilities'
 
     class << self
-
       extend Forwardable
 
       def_delegators :Canard, :ability_key
@@ -21,13 +21,11 @@ module Canard
       end
 
       def for(name, &block)
-        raise ArgumentError.new('No block of ability definitions given') unless block_given?
+        raise ArgumentError, 'No block of ability definitions given' unless block_given?
+
         key = ability_key(name)
         @definitions[key] = block
       end
-
     end
-
   end
-
 end
