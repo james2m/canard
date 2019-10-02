@@ -38,7 +38,7 @@ class Ability
     # this is the user.
     @user = object.respond_to?(:user) ? object.user : object
 
-    add_base_ablilties
+    add_base_abilities
     add_roles_abilities if @user.respond_to?(:roles)
   end
 
