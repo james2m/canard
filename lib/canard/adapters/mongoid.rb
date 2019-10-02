@@ -45,6 +45,6 @@ module Canard
   end
 end
 
-Mongoid::Document::ClassMethods.include Canard::Adapters::Mongoid
-Mongoid::Document::ClassMethods.include Canard::UserModel
+Mongoid::Document::ClassMethods.send(:include, Canard::Adapters::Mongoid)
+Mongoid::Document::ClassMethods.send(:include, Canard::UserModel)
 Canard.find_abilities
