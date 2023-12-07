@@ -137,15 +137,19 @@ Scopes
 The :acts_as_user method will automatically define some named scopes for each role. For the User model
 above it will define the following scopes:
 
-`User.admins::`       return all the users with the admin role   
-`User.non_admins::`   return all the users without the admin role   
-`User.managers::`     return all the users with the manager role   
-`User.non_managers::` return all the users without the manager role   
+| Scope               | Returns                                 |
+| ------------------- | --------------------------------------- |
+| `User.admins`       | all the users with the admin role       |
+| `User.non_admins`   | all the users without the admin role    |
+| `User.managers`     | all the users with the manager role     |
+| `User.non_managers` | all the users without the manager role  |
 
 In addition to the role specific scopes it also adds some general scopes:
 
-`User.with_any_role(roles)::`   return all the users with any of the specified roles   
-`User.with_all_roles(roles)::`  return only the users with all the specified roles   
+| Scope                        | Returns                                       |
+| -------------------          | --------------------------------------------- |
+| `User.with_any_role(roles)`  | all the users with any of the specified roles |
+| `User.with_all_roles(roles)` | only the users with all the specified roles   |
 
 Installation
 ============

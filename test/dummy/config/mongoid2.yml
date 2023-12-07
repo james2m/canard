@@ -1,9 +1,0 @@
-development:
-  database: canard_development
-  host: localhost
-  port: 27017
-
-test:
-  database: canard_test
-  host: localhost
-  port: 27017

@@ -1,6 +1,7 @@
-class User < ActiveRecord::Base
+# frozen_string_literal: true
 
-  acts_as_user :roles => [:viewer, :author, :admin, :editor]
+class User < ActiveRecord::Base
+  acts_as_user roles: %i[viewer author admin editor]
 
   attr_accessible :roles
 end
